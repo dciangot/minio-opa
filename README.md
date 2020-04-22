@@ -2,17 +2,21 @@
 
 ## Riferimenti
 
-- https://www.openpolicyagent.org/docs/latest/
-- https://docs.min.io/docs/minio-sts-quickstart-guide
-- https://github.com/minio/minio/blob/master/docs/sts/opa.md
+- [https://www.openpolicyagent.org/docs/latest/](https://www.openpolicyagent.org/docs/latest/)
+- [https://docs.min.io/docs/minio-sts-quickstart-guide](https://docs.min.io/docs/minio-sts-quickstart-guide)
+- [https://github.com/minio/minio/blob/master/docs/sts/opa.md](https://github.com/minio/minio/blob/master/docs/sts/opa.md)
 
 ## Prerequisiti
 
 - Install make, docker e docker-compose
 - porta 9000 aperta
 - Client IAM per code-flow con redirect URIs:
-  -  'http://<minio host>:9000/minio/'
-  - 'http://<minio host>:9000/minio/login/openid
+    -  'http://<minio host>:9000/minio/'
+    - 'http://<minio host>:9000/minio/login/openid
+- Scaricare il repository: 
+```bash
+git clone https://github.com/dciangot/minio-opa.git && cd minio-opa
+```
 
 
 ## Installazione
@@ -27,7 +31,7 @@ Per stop e start usare:
 
 `make stop/start`
 
-## Default OPA policies in questo setup
+## Test delle default OPA policies in questo setup
 
 - andare alla porta http://<minio host>9000 del sever e seguire la procedura di autenticazione
 - una volta entrati si puo creare il solo bucket con il proprio cognome o nome.cognome
@@ -36,9 +40,9 @@ Per stop e start usare:
 
 Di seguito la spiegazione di come queste policy sono configurate in opa
 
-### Esempio di policy OPA
+## Esempio di creazione policy OPA usando token claims IAM in Minio
 
-Un tipico input che arriva al server OPA da Minio e' in questa forma:
+Un tipico input che arriva al server OPA da Minio dopo l'autenticazione con token IAM e' in questa forma:
 
 ```json
 "input": {

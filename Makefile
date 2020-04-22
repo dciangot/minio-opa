@@ -1,4 +1,6 @@
-all: install
+DOCBIN?=mkdocs
+
+all: publish-doc
 
 install:
 	mkdir -p data
@@ -9,3 +11,7 @@ start:
 
 stop:
 	docker-compose down
+
+publish-doc:
+	cp README.md docs/README.md
+	${DOCBIN} gh-deploy

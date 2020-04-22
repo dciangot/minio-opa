@@ -554,7 +554,7 @@
         <span class="p">}</span>
 </pre></div>
 
-<p>Tutti questi parametri possono essere utilizzati da OPA per decidere se autorizzare o no la richiesta.</p>
+<p>Tutti questi parametri possono essere utilizzati da OPA per decidere se autorizzare o no la richiesta. Si vede inoltre che MINIO ha processato l'<code class="codehilite">id_token</code> dell'utente ricavandone i campi <code class="codehilite">claims</code>.</p>
 <p>Nel nostro esempio abbiamo due principali categorie di permessi: <code class="codehilite">user</code> e <code class="codehilite">scratch</code>.
 Nel primo vogliamo autorizzare praticamente qualsiasi operazione s3, mentre nell'altro, vogliamo che solo il list e il get dei file sia permesso.
 Questo e' rappresentato nel file di default <a href="https://github.com/dciangot/minio-opa/tree/master/policies">policy</a> che abbiamo creato con:</p>

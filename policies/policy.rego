@@ -29,7 +29,7 @@ allow {
 allow {
   username := split(lower(input.claims.email),"@")[0]
   input.bucket == username
-  input.claims.aud == "minio-auth"
+  input.claims.aud == "minio-cnaf"
   permissions := rl_permissions["user"]
   p := permissions[_]
   p == {"action": input.action}
@@ -44,7 +44,7 @@ allow {
 
   re_match( url , ref)
 
-  input.claims.aud == "minio-auth"
+  input.claims.aud == "minio-cnaf"
   permissions := rl_permissions["user"]
   p := permissions[_]
   p == {"action": input.action}

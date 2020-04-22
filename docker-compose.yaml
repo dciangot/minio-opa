@@ -19,8 +19,8 @@ services:
       - "server"
       - "/data"
     environment:
-      - MINIO_POLICY_OPA_URL=http://localhost:8181/v1/data/httpapi/authz/allow
-      - MINIO_IDENTITY_OPENID_CLIENT_ID="minio-auth"
-      - MINIO_IDENTITY_OPENID_CONFIG_URL=http://90.147.174.92:5556/dex/.well-known/openid-configuration
+      MINIO_POLICY_OPA_URL: http://localhost:8181/v1/data/httpapi/authz/allow
+      MINIO_IDENTITY_OPENID_CLIENT_ID: minio-cnaf
+      MINIO_IDENTITY_OPENID_CONFIG_URL: http://90.147.174.92:5556/dex/.well-known/openid-configuration
     volumes:
       - ./data:/data

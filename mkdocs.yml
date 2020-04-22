@@ -15,8 +15,8 @@ extra:
   social:
     - type: "github"
       link: "https://github.com/dciangot/minio-opa"
-    - type: "twetter"
-      link: "imdciangot"
+    - type: "tweeter"
+      link: "https://twitter.com/imdciangot"
 
 markdown_extensions:
   - codehilite

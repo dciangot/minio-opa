@@ -11,9 +11,10 @@ services:
       - "--addr=0.0.0.0:8181"
       - "/policies"
     volumes:
-      - policies/:/policies
+      - ./policies:/policies
   minio:
-    network-mode: host
+    network_mode: host
+    image: minio/minio
     command:
       - "server"
       - "/data"
@@ -22,4 +23,4 @@ services:
       - MINIO_IDENTITY_OPENID_CLIENT_ID="minio-auth"
       - MINIO_IDENTITY_OPENID_CONFIG_URL=http://90.147.174.92:5556/dex/.well-known/openid-configuration
     volumes:
-      - data:/data
+      - ./data:/data

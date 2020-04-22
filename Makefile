@@ -1,6 +1,6 @@
 DOCBIN?=mkdocs
 
-all: publish-doc
+all: install 
 
 install:
 	mkdir -p data

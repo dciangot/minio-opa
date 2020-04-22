@@ -156,7 +156,7 @@ Un tipico input che arriva al server OPA da Minio e' in questa forma:
         }
 ```
 
-Tutti questi parametri possono essere utilizzati da OPA per decidere se autorizzare o no la richiesta.
+Tutti questi parametri possono essere utilizzati da OPA per decidere se autorizzare o no la richiesta. Si vede inoltre che MINIO ha processato l'`id_token` dell'utente ricavandone i campi `claims`.
 
 Nel nostro esempio abbiamo due principali categorie di permessi: `user` e `scratch`.
 Nel primo vogliamo autorizzare praticamente qualsiasi operazione s3, mentre nell'altro, vogliamo che solo il list e il get dei file sia permesso.

@@ -270,22 +270,16 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#default-opa-policies-in-questo-setup" class="md-nav__link">
-    Default OPA policies in questo setup
-  </a>
-  
-    <nav class="md-nav">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#esempio-di-policy-opa" class="md-nav__link">
-    Esempio di policy OPA
+  <a href="#test-delle-default-opa-policies-in-questo-setup" class="md-nav__link">
+    Test delle default OPA policies in questo setup
   </a>
   
 </li>
-        
-      </ul>
-    </nav>
+      
+        <li class="md-nav__item">
+  <a href="#esempio-di-creazione-policy-opa-usando-token-claims-iam-in-minio" class="md-nav__link">
+    Esempio di creazione policy OPA usando token claims IAM in Minio
+  </a>
   
 </li>
       
@@ -356,22 +350,16 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#default-opa-policies-in-questo-setup" class="md-nav__link">
-    Default OPA policies in questo setup
-  </a>
-  
-    <nav class="md-nav">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#esempio-di-policy-opa" class="md-nav__link">
-    Esempio di policy OPA
+  <a href="#test-delle-default-opa-policies-in-questo-setup" class="md-nav__link">
+    Test delle default OPA policies in questo setup
   </a>
   
 </li>
-        
-      </ul>
-    </nav>
+      
+        <li class="md-nav__item">
+  <a href="#esempio-di-creazione-policy-opa-usando-token-claims-iam-in-minio" class="md-nav__link">
+    Esempio di creazione policy OPA usando token claims IAM in Minio
+  </a>
   
 </li>
       
@@ -411,17 +399,22 @@
                 <h1 id="guida-per-setup-iam-minio-opa">Guida per setup IAM-MINIO-OPA</h1>
 <h2 id="riferimenti">Riferimenti</h2>
 <ul>
-<li>https://www.openpolicyagent.org/docs/latest/</li>
-<li>https://docs.min.io/docs/minio-sts-quickstart-guide</li>
-<li>https://github.com/minio/minio/blob/master/docs/sts/opa.md</li>
+<li><a href="https://www.openpolicyagent.org/docs/latest/">https://www.openpolicyagent.org/docs/latest/</a></li>
+<li><a href="https://docs.min.io/docs/minio-sts-quickstart-guide">https://docs.min.io/docs/minio-sts-quickstart-guide</a></li>
+<li><a href="https://github.com/minio/minio/blob/master/docs/sts/opa.md">https://github.com/minio/minio/blob/master/docs/sts/opa.md</a></li>
 </ul>
 <h2 id="prerequisiti">Prerequisiti</h2>
 <ul>
 <li>Install make, docker e docker-compose</li>
 <li>porta 9000 aperta</li>
-<li>Client IAM per code-flow con redirect URIs:</li>
+<li>Client IAM per code-flow con redirect URIs:<ul>
 <li>'http://<minio host>:9000/minio/'</li>
 <li>'http://<minio host>:9000/minio/login/openid</li>
+</ul>
+</li>
+<li>Scaricare il repository: 
+<div class="codehilite"><pre><span></span>git clone https://github.com/dciangot/minio-opa.git <span class="o">&amp;&amp;</span> <span class="nb">cd</span> minio-opa
+</pre></div></li>
 </ul>
 <h2 id="installazione">Installazione</h2>
 <p><code class="codehilite">docker-compose up</code></p>
@@ -429,7 +422,7 @@
 <p><code class="codehilite">make install</code></p>
 <p>Per stop e start usare:</p>
 <p><code class="codehilite">make stop/start</code></p>
-<h2 id="default-opa-policies-in-questo-setup">Default OPA policies in questo setup</h2>
+<h2 id="test-delle-default-opa-policies-in-questo-setup">Test delle default OPA policies in questo setup</h2>
 <ul>
 <li>andare alla porta http://<minio host>9000 del sever e seguire la procedura di autenticazione</li>
 <li>una volta entrati si puo creare il solo bucket con il proprio cognome o nome.cognome</li>
@@ -437,8 +430,8 @@
 <li>dentro il bucket <code class="codehilite">scratch</code> tutti possono leggere e scaricare tutto, ma possono solo scrivere in <code class="codehilite">scratch/&lt;cognome&gt;</code> o, se mancante, crearla.</li>
 </ul>
 <p>Di seguito la spiegazione di come queste policy sono configurate in opa</p>
-<h3 id="esempio-di-policy-opa">Esempio di policy OPA</h3>
-<p>Un tipico input che arriva al server OPA da Minio e' in questa forma:</p>
+<h2 id="esempio-di-creazione-policy-opa-usando-token-claims-iam-in-minio">Esempio di creazione policy OPA usando token claims IAM in Minio</h2>
+<p>Un tipico input che arriva al server OPA da Minio dopo l'autenticazione con token IAM e' in questa forma:</p>
 <div class="codehilite"><pre><span></span><span class="s2">&quot;input&quot;</span><span class="err">:</span> <span class="p">{</span>
           <span class="nt">&quot;account&quot;</span><span class="p">:</span> <span class="s2">&quot;CBS1LDLNI....M6JTAX&quot;</span><span class="p">,</span>
           <span class="nt">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;s3:PutObject&quot;</span><span class="p">,</span>

@@ -45,119 +45,111 @@ Di seguito la spiegazione di come queste policy sono configurate in opa
 Un tipico input che arriva al server OPA da Minio dopo l'autenticazione con token IAM e' in questa forma:
 
 ```json
-"input": {
-          "account": "CBS1LDLNI....M6JTAX",
-          "action": "s3:PutObject",
+      {
+        "input": {
+          "account": "Z........................BI",
+          "action": "s3:CreateBucket",
           "bucket": "ciangottini",
           "conditions": {
-            "Accept": [
-              "*/*"
-            ],
             "Accept-Encoding": [
-              "gzip, deflate"
-            ],
-            "Accept-Language": [
-              "it-IT,it;q=0.9,en-US;q=0.8,en;q=0.7,fr;q=0.6,es;q=0.5"
+              "identity"
             ],
             "Authorization": [
-              "Bearer ey...................cBHpoCoh_2ueHQ"
-            ],
-            "Connection": [
-              "keep-alive"
+              "AWS4-HMAC-SHA256 Credential=ZX4QOC80CNLHIBCLG7BI/20200423/us-east-1/s3/aws4_request, SignedHeaders=host;user-agent;x-amz-content-sha256;x-amz-date;x-amz-security-token, Signature=2926934a3a1380ff8c80c20faeb187a2ddcc42b47a9075fb111987c890811618"
             ],
             "Content-Length": [
-              "101"
+              "0"
             ],
-            "Content-Type": [
-              "application/json"
-            ],
-            "Cookie": [
-              "request_uri=Lw==; OAuth_Token_Request_State=62ce.....1-cb48afaf0274"
-            ],
-            "CurrenTime": [
-              "2020-04-22T10:15:51Z"
-            ],
-            "Delimiter": [
-              "/"
+            "CurrentTime": [
+              "2020-04-23T09:09:31Z"
             ],
             "EpochTime": [
-              "1587550551"
-            ],
-            "Origin": [
-              "http://90.147.XXX.92:9000"
-            ],
-            "Prefix": [
-              ""
+              "1587632971"
             ],
             "Referer": [
-              "http://90.XX.XX.XX:9000/minio/scratch/",
-              "http://90.XX.XX.XX:9000/minio/scratch/"
+              ""
             ],
             "SecureTransport": [
               "false"
             ],
             "SourceIp": [
-              "XXX.XX.77.X"
+              "188.XX3.77.XX"
             ],
             "User-Agent": [
-              "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.113 Safari/537.36"
+              "MinIO (Linux; x86_64) minio-py/5.0.10"
             ],
             "UserAgent": [
-              "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.113 Safari/537.36"
+              "MinIO (Linux; x86_64) minio-py/5.0.10"
+            ],
+            "X-Amz-Content-Sha256": [
+              "e3b.................852b855"
             ],
             "X-Amz-Date": [
-              "20200422T101551Z"
+              "20200423T090933Z"
+            ],
+            "X-Amz-Security-Token": [
+              "eyJhbGciO............vqgpJO9vWgQ3oc3tDOnP4A"
             ],
             "accessKey": [
-              "CBS.............WM6JTAX"
-            ],
-            "at_hash": [
-              "zdvCdgj........ylb8olOaw"
+              "ZX4QOC80CNLHIBCLG7BI"
             ],
             "aud": [
-              "minio-auth"
+              "b8.........................d0d9"
             ],
             "email": [
               "ciangottini@pg.infn.it"
             ],
             "iss": [
-              "http://XX.XX.XX.XX:5556/dex"
+              "https://iam.cloud.infn.it/"
+            ],
+            "jti": [
+              "ffe5...................ce4e"
+            ],
+            "kid": [
+              "rsa1"
             ],
             "name": [
               "Diego Ciangottini"
             ],
-            "nonce": [
-              "B2lgXUX.......mCbRE"
+            "organisation_name": [
+              "infn-cc"
+            ],
+            "preferred_username": [
+              "ciangottini@infn.it"
             ],
             "principaltype": [
               "User"
             ],
             "sub": [
-              "CiQyZjhk..................ODYSBWRvZGFz"
+              "2f8......................286"
             ],
             "userid": [
-              "CB.............M6JTAX"
+              "ZX................BI"
             ],
             "username": [
-              "CBS1LDLN.......TAX"
+              "ZX4..................BI"
             ]
           },
           "owner": false,
-          "object": "/",
+             {"action": "s3:GetObject"},
+          "object": "",
           "claims": {
-            "accessKey": "CBS........AX",
-            "at_hash": "zd...........Oaw",
-            "aud": "minio-auth",
+            "accessKey": "................LG7BI",
+            "aud": "b830.........................07d0d9",
             "email": "ciangottini@pg.infn.it",
-            "email_verified": true,
-            "exp": 1587636946,
-            "iat": 1587550546,
-            "iss": "http://XX.XX.XX.XX:5556/dex",
+            "exp": 1587633250,
+            "groups": [
+              "developers"
+            ],
+            "iat": 1587632650,
+            "iss": "https://iam.cloud.infn.it/",
+            "jti": "ffe5.......7ce4e",
+            "kid": "rsa1",
             "name": "Diego Ciangottini",
-            "nonce": "B2.........bRE",
-            "sub": "CiQyZjhkY2M...................NjFkODkyODYSBWRvZGFz"
+            "organisation_name": "infn-cc",
+            "preferred_username": "ciangottini@infn.it",
+            "sub": "2f8d..............61d89286"
           }
-        }
 ```
 
 Tutti questi parametri possono essere utilizzati da OPA per decidere se autorizzare o no la richiesta. Si vede inoltre che MINIO ha processato l'`id_token` dell'utente ricavandone i campi `claims`.
@@ -193,14 +185,14 @@ Ora possiamo decidere in quali casi applicare questi permessi sulla base degli i
 # Allow users to manage their own data.
 allow {
   # Extract username from email
-  username := split(lower(input.claims.email),"@")[0]
+  username := split(lower(input.claims.preferred_username),"@")[0]
 
   # verify that bucketname == username
   input.bucket == username
 
   # apply only when token auth happened 
   # This is needed to keep admin user and password with full powers
-  input.claims.aud == "minio-cnaf"
+  input.claims.organisation_name == "infn-cc"
 
   # Apply user permissions to this request
   permissions := rl_permissions["user"]
@@ -226,7 +218,7 @@ Mentre per limitare un subrange di chiamate a path del tipo `scratch/<cognome>` 
 
 ```python
 allow {
-  username := split(lower(input.claims.email),"@")[0]
+  username := split(lower(input.claims.preferred_username),"@")[0]
 
   ref := input.conditions.Referer[_]
 
@@ -234,7 +226,7 @@ allow {
 
   re_match( url , ref)
 
-  input.claims.aud == "minio-cnaf"
+  input.claims.organisation_name == "infn-cc"
   permissions := rl_permissions["user"]
   p := permissions[_]
   p == {"action": input.action}

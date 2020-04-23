@@ -10,20 +10,30 @@ rl_permissions := {
              {"action": "s3:DeleteObject"},
              {"action": "s3:GetObject"},
              {"action": "s3:ListAllMyBuckets"},
+             {"action": "s3:GetBucketObjectLockConfiguration"},
              {"action": "s3:ListBucket"},
              {"action": "s3:PutObject"}],
     "scratch": [{"action": "s3:ListAllMyBuckets"},
                 {"action": "s3:GetObject"},
-                {"action": "s3:ListBucket" }]
-}
+                {"action": "s3:ListBucket" }],
+    "admin": [{"action": "admin:ServerTrace"},
+             {"action": "s3:DeleteBucket"},
+             {"action": "s3:DeleteBucket"},
+             {"action": "s3:DeleteObject"},
+             {"action": "s3:GetObject"},
+             {"action": "s3:ListAllMyBuckets"},
+             {"action": "s3:ListBucket"},
+             {"action": "s3:PutObject"}],
 
+}
 
 allow {
   input.account == "minioadmin"
-  permissions := rl_permissions["user"]
+  permissions := rl_permissions["admin"]
   p := permissions[_]
   p == {"action": input.action}
 }
+
 
 # Allow users to manage their own data.
 allow {

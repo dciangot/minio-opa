@@ -15,18 +15,8 @@ extra:
   social:
     - type: "github"
       link: "https://github.com/dciangot/minio-opa"
-    - type: "tweeter"
+    - type: "twitter"
       link: "https://twitter.com/imdciangot"
 
 markdown_extensions:
   - codehilite
-  - pymdownx.arithmatex
-  - pymdownx.betterem:
-      smart_enable: all
-  - pymdownx.caret
-  - pymdownx.critic
-  - pymdownx.details
-  - pymdownx.inlinehilite
-  - pymdownx.superfences
-  - pymdownx.tasklist:
-      custom_checkbox: true

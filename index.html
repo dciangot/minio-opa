@@ -412,22 +412,24 @@
 <li>'http://<minio host>:9000/minio/login/openid</li>
 </ul>
 </li>
-<li>Scaricare il repository: 
-<div class="codehilite"><pre><span></span>git clone https://github.com/dciangot/minio-opa.git <span class="o">&amp;&amp;</span> <span class="nb">cd</span> minio-opa
-</pre></div></li>
+<li>Scaricare il repository: </li>
 </ul>
+<div class="codehilite"><pre><span></span>git clone https://github.com/dciangot/minio-opa.git <span class="o">&amp;&amp;</span> <span class="nb">cd</span> minio-opa
+</pre></div>
+
+
 <h2 id="installazione">Installazione</h2>
-<p><code class="codehilite">docker-compose up</code></p>
+<p><code>docker-compose up</code></p>
 <p>o </p>
-<p><code class="codehilite">make install</code></p>
+<p><code>make install</code></p>
 <p>Per stop e start usare:</p>
-<p><code class="codehilite">make stop/start</code></p>
+<p><code>make stop/start</code></p>
 <h2 id="test-delle-default-opa-policies-in-questo-setup">Test delle default OPA policies in questo setup</h2>
 <ul>
 <li>andare alla porta http://<minio host>9000 del sever e seguire la procedura di autenticazione</li>
 <li>una volta entrati si puo creare il solo bucket con il proprio cognome o nome.cognome</li>
 <li>all'interno di quel bucket e' possibile scrivere, leggere e creare cartelle</li>
-<li>dentro il bucket <code class="codehilite">scratch</code> tutti possono leggere e scaricare tutto, ma possono solo scrivere in <code class="codehilite">scratch/&lt;cognome&gt;</code> o, se mancante, crearla.</li>
+<li>dentro il bucket <code>scratch</code> tutti possono leggere e scaricare tutto, ma possono solo scrivere in <code>scratch/&lt;cognome&gt;</code> o, se mancante, crearla.</li>
 </ul>
 <p>Di seguito la spiegazione di come queste policy sono configurate in opa</p>
 <h2 id="esempio-di-creazione-policy-opa-usando-token-claims-iam-in-minio">Esempio di creazione policy OPA usando token claims IAM in Minio</h2>
@@ -547,8 +549,9 @@
         <span class="p">}</span>
 </pre></div>
 
-<p>Tutti questi parametri possono essere utilizzati da OPA per decidere se autorizzare o no la richiesta. Si vede inoltre che MINIO ha processato l'<code class="codehilite">id_token</code> dell'utente ricavandone i campi <code class="codehilite">claims</code>.</p>
-<p>Nel nostro esempio abbiamo due principali categorie di permessi: <code class="codehilite">user</code> e <code class="codehilite">scratch</code>.
+
+<p>Tutti questi parametri possono essere utilizzati da OPA per decidere se autorizzare o no la richiesta. Si vede inoltre che MINIO ha processato l'<code>id_token</code> dell'utente ricavandone i campi <code>claims</code>.</p>
+<p>Nel nostro esempio abbiamo due principali categorie di permessi: <code>user</code> e <code>scratch</code>.
 Nel primo vogliamo autorizzare praticamente qualsiasi operazione s3, mentre nell'altro, vogliamo che solo il list e il get dei file sia permesso.
 Questo e' rappresentato nel file di default <a href="https://github.com/dciangot/minio-opa/tree/master/policies">policy</a> che abbiamo creato con:</p>
 <div class="codehilite"><pre><span></span><span class="n">package</span> <span class="n">httpapi</span><span class="o">.</span><span class="n">authz</span>
@@ -571,7 +574,8 @@ Questo e' rappresentato nel file di default <a href="https://github.com/dciangot
 <span class="p">}</span>
 </pre></div>
 
-<p>Ora possiamo decidere in quali casi applicare questi permessi sulla base degli input visti prima. Iniziamo dal bucket utente, vogliamo autorizzare a creare ed operare su un determinato bucket solo le richieste che arrivano con un <code class="codehilite">claim</code> di tipo email nelle forma <code class="codehilite">&lt;bucket name&gt;@...</code>. Cosi che nel caso IAM INFN cloud l'utente possa scrivere nel bucket a suo <code class="codehilite">nome.cognome</code> o <code class="codehilite">cognome</code>.</p>
+
+<p>Ora possiamo decidere in quali casi applicare questi permessi sulla base degli input visti prima. Iniziamo dal bucket utente, vogliamo autorizzare a creare ed operare su un determinato bucket solo le richieste che arrivano con un <code>claim</code> di tipo email nelle forma <code>&lt;bucket name&gt;@...</code>. Cosi che nel caso IAM INFN cloud l'utente possa scrivere nel bucket a suo <code>nome.cognome</code> o <code>cognome</code>.</p>
 <div class="codehilite"><pre><span></span><span class="c1"># Allow users to manage their own data.</span>
 <span class="n">allow</span> <span class="p">{</span>
   <span class="c1"># Extract username from email</span>
@@ -591,7 +595,8 @@ Questo e' rappresentato nel file di default <a href="https://github.com/dciangot
 <span class="p">}</span>
 </pre></div>
 
-<p>Per quanto riguarda il bucket <code class="codehilite">scratch</code> invece, vogliamo che chiunque abbia i permessi <code class="codehilite">scratch</code> definiti sopra, quindi:</p>
+
+<p>Per quanto riguarda il bucket <code>scratch</code> invece, vogliamo che chiunque abbia i permessi <code>scratch</code> definiti sopra, quindi:</p>
 <div class="codehilite"><pre><span></span><span class="c1"># Allow to retrieve and see data from other users in scratch area</span>
 <span class="n">allow</span> <span class="p">{</span>
   <span class="nb">input</span><span class="o">.</span><span class="n">bucket</span> <span class="o">==</span> <span class="s2">&quot;scratch&quot;</span>
@@ -602,7 +607,8 @@ Questo e' rappresentato nel file di default <a href="https://github.com/dciangot
 <span class="p">}</span>
 </pre></div>
 
-<p>Mentre per limitare un subrange di chiamate a path del tipo <code class="codehilite">scratch/&lt;cognome&gt;</code> abbiamo bisogno di prendere altri input dalla richiesta e verificarli come segue:</p>
+
+<p>Mentre per limitare un subrange di chiamate a path del tipo <code>scratch/&lt;cognome&gt;</code> abbiamo bisogno di prendere altri input dalla richiesta e verificarli come segue:</p>
 <div class="codehilite"><pre><span></span><span class="n">allow</span> <span class="p">{</span>
   <span class="n">username</span> <span class="p">:</span><span class="o">=</span> <span class="n">split</span><span class="p">(</span><span class="n">lower</span><span class="p">(</span><span class="nb">input</span><span class="o">.</span><span class="n">claims</span><span class="o">.</span><span class="n">email</span><span class="p">),</span><span class="s2">&quot;@&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 
@@ -619,6 +625,7 @@ Questo e' rappresentato nel file di default <a href="https://github.com/dciangot
 <span class="p">}</span>
 </pre></div>
 
+
 <p>Infine vogliamo mantenere tutti i poter per l'autenticazione user e password dell'admin:</p>
 <div class="codehilite"><pre><span></span><span class="n">allow</span> <span class="p">{</span>
   <span class="nb">input</span><span class="o">.</span><span class="n">account</span> <span class="o">==</span> <span class="s2">&quot;minioadmin&quot;</span>
@@ -628,14 +635,17 @@ Questo e' rappresentato nel file di default <a href="https://github.com/dciangot
 <span class="p">}</span>
 </pre></div>
 
+
 <p>A questo punto se non fossero gia incluse di default in questo deployment, potremmo inserire nuove policy in opa con un semplice curl:</p>
 <div class="codehilite"><pre><span></span>curl -X PUT --data-binary @policy.rego   http://localhost:8181/v1/policies/users
 </pre></div>
+
 
 <h2 id="debugging-opa">Debugging OPA</h2>
 <p>I log sono visibili (per ora) in debug mode qui:</p>
 <div class="codehilite"><pre><span></span>docker logs --tail <span class="m">2000</span> minio-opa_opa_1
 </pre></div>
+
 
 <h2 id="debugging-minio">Debugging Minio</h2>
 <ul>
@@ -648,6 +658,7 @@ Questo e' rappresentato nel file di default <a href="https://github.com/dciangot
 </ul>
 <div class="codehilite"><pre><span></span>mc config host add myminio http://localhost:9000 minioadmin minioadmin
 </pre></div>
+
 
 <ul>
 <li>stampare il trace http con</li>
@@ -688,7 +699,7 @@ Questo e' rappresentato nel file di default <a href="https://github.com/dciangot
     
       <a href="https://github.com/dciangot/minio-opa" class="md-footer-social__link fa fa-github"></a>
     
-      <a href="https://twitter.com/imdciangot" class="md-footer-social__link fa fa-tweeter"></a>
+      <a href="https://twitter.com/imdciangot" class="md-footer-social__link fa fa-twitter"></a>
     
   </div>
 

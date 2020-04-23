@@ -37,16 +37,16 @@ allow {
 
 # Allow users to manage their own data.
 allow {
-  username := split(lower(input.claims.email),"@")[0]
+  username := split(lower(input.claims.preferred_username),"@")[0]
   input.bucket == username
-  input.claims.aud == "minio-cnaf"
+  input.claims.organisation_name == "infn-cc"
   permissions := rl_permissions["user"]
   p := permissions[_]
   p == {"action": input.action}
 }
 
 allow {
-  username := split(lower(input.claims.email),"@")[0]
+  username := split(lower(input.claims.preferred_username),"@")[0]
 
   ref := input.conditions.Referer[_]
 
@@ -54,7 +54,7 @@ allow {
 
   re_match( url , ref)
 
-  input.claims.aud == "minio-cnaf"
+  input.claims.organisation_name == "infn-cc"
   permissions := rl_permissions["user"]
   p := permissions[_]
   p == {"action": input.action}

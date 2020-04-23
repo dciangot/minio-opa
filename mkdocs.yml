@@ -28,5 +28,3 @@ markdown_extensions:
   - pymdownx.details
   - pymdownx.inlinehilite
   - pymdownx.superfences
-  - pymdownx.tasklist:
-      custom_checkbox: true

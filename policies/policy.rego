@@ -55,6 +55,15 @@ allow {
   p == {"action": input.action}
 }
 
+#allow {
+#  username := input.claims.preferred_username
+#  input.bucket == username
+#  input.claims.aud == "7ecf180f-0d40-4794-9198-f10cc4ee53b3"
+#  permissions := rl_permissions["user"]
+#  p := permissions[_]
+#  p == {"action": input.action}
+#}
+
 allow {
   username := split(lower(input.claims.preferred_username),"@")[0]
 
@@ -84,7 +93,6 @@ allow {
   p := permissions[_]
   p == {"action": input.action}
 }
-
 
 # Allow to retrieve and see data from other users in scratch area
 allow {

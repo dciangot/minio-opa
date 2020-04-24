@@ -14,13 +14,15 @@ services:
       - ./policies:/policies
   minio:
     network_mode: host
-    image: minio/minio
+    image: dciangot/minio
     command:
       - "server"
       - "/data"
     environment:
       MINIO_POLICY_OPA_URL: http://localhost:8181/v1/data/httpapi/authz/allow
-      MINIO_IDENTITY_OPENID_CLIENT_ID: b8302218-8cd7-4b34-bba8-f8baa007d0d9
-      MINIO_IDENTITY_OPENID_CONFIG_URL: http://iam.cloud.infn.it/.well-known/openid-configuration
+      MINIO_IDENTITY_OPENID_CLIENT_ID: 7ecf180f-0d40-4794-9198-f10cc4ee53b3 
+      #MINIO_IDENTITY_OPENID_CLIENT_ID: b8302218-8cd7-4b34-bba8-f8baa007d0d9
+      #MINIO_IDENTITY_OPENID_CLIENT_ID: 3811289a-82d7-4869-a337-abf2144991a4
+      MINIO_IDENTITY_OPENID_CONFIG_URL: https://iam-demo.cloud.cnaf.infn.it/.well-known/openid-configuration
     volumes:
       - ./data:/data

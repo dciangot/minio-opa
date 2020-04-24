@@ -11,12 +11,14 @@ rl_permissions := {
              {"action": "s3:GetObject"},
              {"action": "s3:ListAllMyBuckets"},
              {"action": "s3:GetBucketObjectLockConfiguration"},
+             {"action": "s3:GetBucketLocation"},
              {"action": "s3:ListBucket"},
              {"action": "s3:PutObject"}],
     "scratch": [{"action": "s3:ListAllMyBuckets"},
                 {"action": "s3:GetObject"},
                 {"action": "s3:ListBucket" }],
     "admin": [{"action": "admin:ServerTrace"},
+             {"action": "s3:GetBucketLocation"},
              {"action": "s3:DeleteBucket"},
              {"action": "s3:DeleteBucket"},
              {"action": "s3:DeleteObject"},
@@ -24,7 +26,6 @@ rl_permissions := {
              {"action": "s3:ListAllMyBuckets"},
              {"action": "s3:ListBucket"},
              {"action": "s3:PutObject"}],
-
 }
 
 allow {
@@ -39,7 +40,16 @@ allow {
 allow {
   username := split(lower(input.claims.preferred_username),"@")[0]
   input.bucket == username
-  input.claims.organisation_name == "infn-cc"
+  input.claims.iss == "https://iam-demo.cloud.cnaf.infn.it/"
+  permissions := rl_permissions["user"]
+  p := permissions[_]
+  p == {"action": input.action}
+}
+
+allow {
+  username := input.claims.preferred_username
+  input.bucket == username
+  input.claims.iss == "https://iam-demo.cloud.cnaf.infn.it/"
   permissions := rl_permissions["user"]
   p := permissions[_]
   p == {"action": input.action}
@@ -54,7 +64,22 @@ allow {
 
   re_match( url , ref)
 
-  input.claims.organisation_name == "infn-cc"
+  input.claims.iss == "https://iam-demo.cloud.cnaf.infn.it/"
+  permissions := rl_permissions["user"]
+  p := permissions[_]
+  p == {"action": input.action}
+}
+
+allow {
+  username := input.claims.preferred_username
+
+  ref := input.conditions.Referer[_]
+
+  url := concat("/", ["^http://.*:9000/minio/scratch",username,".*$"] )
+
+  re_match( url , ref)
+
+  input.claims.iss == "https://iam-demo.cloud.cnaf.infn.it/"
   permissions := rl_permissions["user"]
   p := permissions[_]
   p == {"action": input.action}

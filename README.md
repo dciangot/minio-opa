@@ -277,11 +277,37 @@ mc admin trace myminio
 
 # Usare Server Side Encryption
 
-come funziona
+```
+MinIO uses a key-management-system (KMS) to support SSE-S3. If a client requests SSE-S3, or auto-encryption
+is enabled, the MinIO server encrypts each object with an unique object key which is protected by a master key
+managed by the KMS.
+MinIO supports commonly-used KMS implementations, like AWS-KMS or
+Hashicorp Vault via our KES project.
+KES makes it possible to scale your KMS horizontally with your storage infrastructure (MinIO clusters).
+Therefore, it wraps around the KMS implementation like this:
 
-disegno deployment
+       +-------+                 +-------+
+       | MinIO |                 | MinIO |
+       +---+---+                 +---+---+
+           |                         |
+      +----+-------------------------+----+---- KMS
+      |    |                         |    |
+      | +--+--+                   +--+--+ |
+      | | KES +--+             +--+ KES | |
+      | +-----+  |  +-------+  |  +-----+ |
+      |          +--+ Vault +--+          |
+      | +-----+  |  +-------+  |  +-----+ |
+      | | KES +--+             +--+ KES | |
+      | +--+--+                   +--+--+ |
+      |    |                         |    |
+      +----+-------------------------+----+---- KMS
+           |                         |
+       +---+---+                 +---+---+
+       | MinIO |                 | MinIO |
+       +-------+                 +-------+
+```
 
-cosa proviamo sotto
+Per semplicita' di seguito proveremo il setup con un solo server KES e un server minio. Al posto di Vault la chiave verra' salvata su FS.
 
 ## Riferimenti
 - [https://docs.min.io/docs/how-to-secure-access-to-minio-server-with-tls](https://docs.min.io/docs/how-to-secure-access-to-minio-server-with-tls)
@@ -293,7 +319,7 @@ cosa proviamo sotto
 
 ```bash
 # Install utility for self signed certificate generation
-sudo wget https://github.com/DODAS-TS/dodas-x509/releases/download/v0.0.2/dodas-x509 -O /usr/local/bin
+sudo wget https://github.com/DODAS-TS/dodas-x509/releases/download/v0.0.2/dodas-x509 -O /usr/local/bin/dodas-x509
 
 # Install Minio KES
 wget https://github.com/minio/kes/releases/latest/download/linux-amd64.zip
@@ -345,7 +371,7 @@ kes tool identity of certs/minio.cert
 
 ## File di configurazione KES
 
-Il file di configurazione per questo setup consiste nell'indicare i cert per TLS e quello per autorizzare Minio a ritirare e creare chiavi.
+Il file di configurazione (`kes.config`) per questo setup consiste nell'indicare i cert per TLS e quello per autorizzare Minio a ritirare e creare chiavi.
 
 ```
 address = "0.0.0.0:7373"
@@ -353,7 +379,7 @@ root    = "<value obtained with: `kes tool identity of certs/root.cert`>"
 
 [tls]
 key  = "kes.key"
-cert = "kes.cert"
+cert = "kes.pem"
 
 [policy.prod-app] 
 paths      = [ "/v1/key/create/my-minio-key", 
@@ -391,11 +417,11 @@ services:
     command:
       - "server"
       - "--address"
-      - ":9001"
+      - ":9000"
       - "/data"
     environment:
       MINIO_POLICY_OPA_URL: http://localhost:8181/v1/data/httpapi/authz/allow
-      MINIO_IDENTITY_OPENID_CLIENT_ID: 7ecf.....4ee53b3
+      MINIO_IDENTITY_OPENID_CLIENT_ID: <IAM client ID>
       MINIO_IDENTITY_OPENID_CONFIG_URL: https://iam-demo.cloud.cnaf.infn.it/.well-known/openid-configuration
       MINIO_KMS_KES_ENDPOINT: https://127.0.0.1:7373
       MINIO_KMS_KES_CERT_FILE: /root/.minio/certs/minio.cert

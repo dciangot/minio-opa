@@ -7,6 +7,8 @@ default allow = false
 rl_permissions := {
     "user": [{"action": "s3:CreateBucket"},
              {"action": "s3:DeleteBucket"},
+             {"action": "s3:PutObjectLegalHold"},
+             {"action": "s3:PutObjectRetention"},
              {"action": "s3:DeleteObject"},
              {"action": "s3:GetObject"},
              {"action": "s3:ListAllMyBuckets"},
@@ -18,6 +20,9 @@ rl_permissions := {
                 {"action": "s3:GetObject"},
                 {"action": "s3:ListBucket" }],
     "admin": [{"action": "admin:ServerTrace"},
+             {"action": "s3:PutObjectLegalHold"},
+             {"action": "s3:PutObjectRetention"},
+             {"action": "s3:CreateBucket"},
              {"action": "s3:GetBucketLocation"},
              {"action": "s3:DeleteBucket"},
              {"action": "s3:DeleteBucket"},
@@ -30,9 +35,6 @@ rl_permissions := {
 
 allow {
   input.account == "minioadmin"
-  permissions := rl_permissions["admin"]
-  p := permissions[_]
-  p == {"action": input.action}
 }
 
 
@@ -55,14 +57,14 @@ allow {
   p == {"action": input.action}
 }
 
-#allow {
-#  username := input.claims.preferred_username
-#  input.bucket == username
-#  input.claims.aud == "7ecf180f-0d40-4794-9198-f10cc4ee53b3"
-#  permissions := rl_permissions["user"]
-#  p := permissions[_]
-#  p == {"action": input.action}
-#}
+allow {
+  username := input.claims.preferred_username
+  input.bucket == username
+  input.claims.iss == "https://iam-demo.cloud.cnaf.infn.it/"
+  permissions := rl_permissions["user"]
+  p := permissions[_]
+  p == {"action": input.action}
+}
 
 allow {
   username := split(lower(input.claims.preferred_username),"@")[0]

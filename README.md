@@ -274,3 +274,164 @@ mc config host add myminio http://localhost:9000 minioadmin minioadmin
 ```bash
 mc admin trace myminio
 ```
+
+# Usare Server Side Encryption
+
+come funziona
+
+disegno deployment
+
+cosa proviamo sotto
+
+## Riferimenti
+- [https://docs.min.io/docs/how-to-secure-access-to-minio-server-with-tls](https://docs.min.io/docs/how-to-secure-access-to-minio-server-with-tls)
+- [https://docs.minio.io/docs/how-to-use-minio-s-server-side-encryption-with-aws-cli](https://docs.minio.io/docs/how-to-use-minio-s-server-side-encryption-with-aws-cli)
+- [https://github.com/minio/kes/wiki/MinIO-Object-Storage#kes-server-setup]([https://github.com/minio/kes/wiki/MinIO-Object-Storage#kes-server-setup)
+- [https://github.com/minio/kes/wiki/Server-API](https://github.com/minio/kes/wiki/Server-API)
+
+## Requirements
+
+```bash
+# Install utility for self signed certificate generation
+sudo wget https://github.com/DODAS-TS/dodas-x509/releases/download/v0.0.2/dodas-x509 -O /usr/local/bin
+
+# Install Minio KES
+wget https://github.com/minio/kes/releases/latest/download/linux-amd64.zip
+unzip linux-amd64.zip
+sudo mv kes /usr/local/bin/
+
+# Create folder for certificates and keys
+mkdir certs
+mkdir keys
+
+# Create folder for Minoi encryption test
+mkdir data_encrypt
+```
+
+## Generate self-signed certificates
+
+```bash
+# Generate KES server certificate
+dodas-x509 --hostname 127.0.0.1 --ca-path $PWD/certs --cert-path $PWD/certs --cert-name kes --ca-name KES
+
+# Generate Minio server certificate
+dodas-x509 --hostname <public IP minio> --ca-path $PWD/certs --cert-path $PWD/certs --cert-name minio --ca-name MINIO
+
+# Use the minio naming convention for certificates
+mv certs/minio.pem certs/public.crt
+mv certs/minio.key certs/private.key
+```
+
+## Creare utenti KES
+
+Definiamo un utente con permessi admin (root) e uno per il server Minio:
+
+```bash
+# Creation of KES user root
+kes tool identity new --key="certs/root.key" --cert="certs/root.cert" root
+
+# Creation of KES user Minio
+kes tool identity new --key="certs/minio.key" --cert="certs/minio.cert" MinIO
+```
+
+Adesso in cert dovrebbero essere stati create i certificati indicati, che puo' indicarci lo user ID di KES per questi certificati con:
+
+```bash
+kes tool identity of certs/root.cert
+
+kes tool identity of certs/minio.cert
+```
+
+
+## File di configurazione KES
+
+Il file di configurazione per questo setup consiste nell'indicare i cert per TLS e quello per autorizzare Minio a ritirare e creare chiavi.
+
+```
+address = "0.0.0.0:7373"
+root    = "<value obtained with: `kes tool identity of certs/root.cert`>"
+
+[tls]
+key  = "kes.key"
+cert = "kes.cert"
+
+[policy.prod-app] 
+paths      = [ "/v1/key/create/my-minio-key", 
+               "/v1/key/generate/my-minio-key" ,
+               "/v1/key/decrypt/my-minio-key" ]
+identities = [ "<value obtained with: `kes tool identity of certs/minio.cert`>" ]
+
+# We use the local filesystem for simplicity.
+# We could use Vault for instance.
+[keystore.fs]
+path    = "./keys" # Choose a directory for the secret keys
+```
+
+## Docker Compose: minio, opa, kes
+
+```yaml
+version: '3.7'
+services:
+  opa:
+    image: openpolicyagent/opa:0.18.0
+    network_mode: host
+    command:
+      - "run"
+      - "--server"
+      - "--log-level=debug"
+      - "--log-format=text"
+      - "--addr=0.0.0.0:8181"
+      - "/policies"
+    volumes:
+      - ./policies:/policies
+
+  minio:
+    network_mode: host
+    image: dciangot/minio
+    command:
+      - "server"
+      - "--address"
+      - ":9001"
+      - "/data"
+    environment:
+      MINIO_POLICY_OPA_URL: http://localhost:8181/v1/data/httpapi/authz/allow
+      MINIO_IDENTITY_OPENID_CLIENT_ID: 7ecf.....4ee53b3
+      MINIO_IDENTITY_OPENID_CONFIG_URL: https://iam-demo.cloud.cnaf.infn.it/.well-known/openid-configuration
+      MINIO_KMS_KES_ENDPOINT: https://127.0.0.1:7373
+      MINIO_KMS_KES_CERT_FILE: /root/.minio/certs/minio.cert
+      MINIO_KMS_KES_KEY_FILE: /root/.minio/certs/minio.key
+      MINIO_KMS_KES_CA_PATH: /root/.minio/certs/kes.pem
+      MINIO_KMS_KES_KEY_NAME: my-minio-key
+      MINIO_KMS_AUTO_ENCRYPTION: 1
+    volumes:
+      - ./data_encrypt:/data
+      - ./certs:/root/.minio/certs
+
+  kes:
+    network_mode: host
+    image: minio/kes
+    command:
+      - "server"
+      - "--mtls-auth=ignore"
+      - "--config=/root/config/server-config.toml"
+    volumes:
+      - ./certs:/root/certs
+      - ./kes.config:/root/config/server-config.toml
+      - ./keys:/keys
+```
+
+## Generare una chiave di cifratura per Minio
+
+Generiamo una chiave con l'utente minio:
+
+```bash
+cd certs
+export KES_CLIENT_TLS_CERT_FILE=minio.cert
+export KES_CLIENT_TLS_KEY_FILE=minio.key
+kes key create my-minio-key -k
+cd -
+```
+
+Ora in `.keys` dovrebbe essere apparsa la chiave.
+
+Dovrebbe essere tutto pronto per poter andare a https://<indirizzo pubblico Minio>:9000 creare un bucket con il mio IAM username o con `minioadmin:minioadmin`. Tutto quello che verra' caricato nel bucket apparira' in `./data_encrypt`.

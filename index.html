@@ -434,119 +434,111 @@
 <p>Di seguito la spiegazione di come queste policy sono configurate in opa</p>
 <h2 id="esempio-di-creazione-policy-opa-usando-token-claims-iam-in-minio">Esempio di creazione policy OPA usando token claims IAM in Minio</h2>
 <p>Un tipico input che arriva al server OPA da Minio dopo l'autenticazione con token IAM e' in questa forma:</p>
-<div class="codehilite"><pre><span></span><span class="s2">&quot;input&quot;</span><span class="err">:</span> <span class="p">{</span>
-          <span class="nt">&quot;account&quot;</span><span class="p">:</span> <span class="s2">&quot;CBS1LDLNI....M6JTAX&quot;</span><span class="p">,</span>
-          <span class="nt">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;s3:PutObject&quot;</span><span class="p">,</span>
+<div class="codehilite"><pre><span></span>      <span class="p">{</span>
+        <span class="nt">&quot;input&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;account&quot;</span><span class="p">:</span> <span class="s2">&quot;Z........................BI&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;s3:CreateBucket&quot;</span><span class="p">,</span>
           <span class="nt">&quot;bucket&quot;</span><span class="p">:</span> <span class="s2">&quot;ciangottini&quot;</span><span class="p">,</span>
           <span class="nt">&quot;conditions&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="nt">&quot;Accept&quot;</span><span class="p">:</span> <span class="p">[</span>
-              <span class="s2">&quot;*/*&quot;</span>
-            <span class="p">],</span>
             <span class="nt">&quot;Accept-Encoding&quot;</span><span class="p">:</span> <span class="p">[</span>
-              <span class="s2">&quot;gzip, deflate&quot;</span>
-            <span class="p">],</span>
-            <span class="nt">&quot;Accept-Language&quot;</span><span class="p">:</span> <span class="p">[</span>
-              <span class="s2">&quot;it-IT,it;q=0.9,en-US;q=0.8,en;q=0.7,fr;q=0.6,es;q=0.5&quot;</span>
+              <span class="s2">&quot;identity&quot;</span>
             <span class="p">],</span>
             <span class="nt">&quot;Authorization&quot;</span><span class="p">:</span> <span class="p">[</span>
-              <span class="s2">&quot;Bearer ey...................cBHpoCoh_2ueHQ&quot;</span>
-            <span class="p">],</span>
-            <span class="nt">&quot;Connection&quot;</span><span class="p">:</span> <span class="p">[</span>
-              <span class="s2">&quot;keep-alive&quot;</span>
+              <span class="s2">&quot;AWS4-HMAC-SHA256 Credential=ZX4QOC80CNLHIBCLG7BI/20200423/us-east-1/s3/aws4_request, SignedHeaders=host;user-agent;x-amz-content-sha256;x-amz-date;x-amz-security-token, Signature=2926934a3a1380ff8c80c20faeb187a2ddcc42b47a9075fb111987c890811618&quot;</span>
             <span class="p">],</span>
             <span class="nt">&quot;Content-Length&quot;</span><span class="p">:</span> <span class="p">[</span>
-              <span class="s2">&quot;101&quot;</span>
+              <span class="s2">&quot;0&quot;</span>
             <span class="p">],</span>
-            <span class="nt">&quot;Content-Type&quot;</span><span class="p">:</span> <span class="p">[</span>
-              <span class="s2">&quot;application/json&quot;</span>
-            <span class="p">],</span>
-            <span class="nt">&quot;Cookie&quot;</span><span class="p">:</span> <span class="p">[</span>
-              <span class="s2">&quot;request_uri=Lw==; OAuth_Token_Request_State=62ce.....1-cb48afaf0274&quot;</span>
-            <span class="p">],</span>
-            <span class="nt">&quot;CurrenTime&quot;</span><span class="p">:</span> <span class="p">[</span>
-              <span class="s2">&quot;2020-04-22T10:15:51Z&quot;</span>
-            <span class="p">],</span>
-            <span class="nt">&quot;Delimiter&quot;</span><span class="p">:</span> <span class="p">[</span>
-              <span class="s2">&quot;/&quot;</span>
+            <span class="nt">&quot;CurrentTime&quot;</span><span class="p">:</span> <span class="p">[</span>
+              <span class="s2">&quot;2020-04-23T09:09:31Z&quot;</span>
             <span class="p">],</span>
             <span class="nt">&quot;EpochTime&quot;</span><span class="p">:</span> <span class="p">[</span>
-              <span class="s2">&quot;1587550551&quot;</span>
-            <span class="p">],</span>
-            <span class="nt">&quot;Origin&quot;</span><span class="p">:</span> <span class="p">[</span>
-              <span class="s2">&quot;http://90.147.XXX.92:9000&quot;</span>
-            <span class="p">],</span>
-            <span class="nt">&quot;Prefix&quot;</span><span class="p">:</span> <span class="p">[</span>
-              <span class="s2">&quot;&quot;</span>
+              <span class="s2">&quot;1587632971&quot;</span>
             <span class="p">],</span>
             <span class="nt">&quot;Referer&quot;</span><span class="p">:</span> <span class="p">[</span>
-              <span class="s2">&quot;http://90.XX.XX.XX:9000/minio/scratch/&quot;</span><span class="p">,</span>
-              <span class="s2">&quot;http://90.XX.XX.XX:9000/minio/scratch/&quot;</span>
+              <span class="s2">&quot;&quot;</span>
             <span class="p">],</span>
             <span class="nt">&quot;SecureTransport&quot;</span><span class="p">:</span> <span class="p">[</span>
               <span class="s2">&quot;false&quot;</span>
             <span class="p">],</span>
             <span class="nt">&quot;SourceIp&quot;</span><span class="p">:</span> <span class="p">[</span>
-              <span class="s2">&quot;XXX.XX.77.X&quot;</span>
+              <span class="s2">&quot;188.XX3.77.XX&quot;</span>
             <span class="p">],</span>
             <span class="nt">&quot;User-Agent&quot;</span><span class="p">:</span> <span class="p">[</span>
-              <span class="s2">&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.113 Safari/537.36&quot;</span>
+              <span class="s2">&quot;MinIO (Linux; x86_64) minio-py/5.0.10&quot;</span>
             <span class="p">],</span>
             <span class="nt">&quot;UserAgent&quot;</span><span class="p">:</span> <span class="p">[</span>
-              <span class="s2">&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.113 Safari/537.36&quot;</span>
+              <span class="s2">&quot;MinIO (Linux; x86_64) minio-py/5.0.10&quot;</span>
+            <span class="p">],</span>
+            <span class="nt">&quot;X-Amz-Content-Sha256&quot;</span><span class="p">:</span> <span class="p">[</span>
+              <span class="s2">&quot;e3b.................852b855&quot;</span>
             <span class="p">],</span>
             <span class="nt">&quot;X-Amz-Date&quot;</span><span class="p">:</span> <span class="p">[</span>
-              <span class="s2">&quot;20200422T101551Z&quot;</span>
+              <span class="s2">&quot;20200423T090933Z&quot;</span>
+            <span class="p">],</span>
+            <span class="nt">&quot;X-Amz-Security-Token&quot;</span><span class="p">:</span> <span class="p">[</span>
+              <span class="s2">&quot;eyJhbGciO............vqgpJO9vWgQ3oc3tDOnP4A&quot;</span>
             <span class="p">],</span>
             <span class="nt">&quot;accessKey&quot;</span><span class="p">:</span> <span class="p">[</span>
-              <span class="s2">&quot;CBS.............WM6JTAX&quot;</span>
-            <span class="p">],</span>
-            <span class="nt">&quot;at_hash&quot;</span><span class="p">:</span> <span class="p">[</span>
-              <span class="s2">&quot;zdvCdgj........ylb8olOaw&quot;</span>
+              <span class="s2">&quot;ZX4QOC80CNLHIBCLG7BI&quot;</span>
             <span class="p">],</span>
             <span class="nt">&quot;aud&quot;</span><span class="p">:</span> <span class="p">[</span>
-              <span class="s2">&quot;minio-auth&quot;</span>
+              <span class="s2">&quot;b8.........................d0d9&quot;</span>
             <span class="p">],</span>
             <span class="nt">&quot;email&quot;</span><span class="p">:</span> <span class="p">[</span>
               <span class="s2">&quot;ciangottini@pg.infn.it&quot;</span>
             <span class="p">],</span>
             <span class="nt">&quot;iss&quot;</span><span class="p">:</span> <span class="p">[</span>
-              <span class="s2">&quot;http://XX.XX.XX.XX:5556/dex&quot;</span>
+              <span class="s2">&quot;https://iam.cloud.infn.it/&quot;</span>
+            <span class="p">],</span>
+            <span class="nt">&quot;jti&quot;</span><span class="p">:</span> <span class="p">[</span>
+              <span class="s2">&quot;ffe5...................ce4e&quot;</span>
+            <span class="p">],</span>
+            <span class="nt">&quot;kid&quot;</span><span class="p">:</span> <span class="p">[</span>
+              <span class="s2">&quot;rsa1&quot;</span>
             <span class="p">],</span>
             <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="p">[</span>
               <span class="s2">&quot;Diego Ciangottini&quot;</span>
             <span class="p">],</span>
-            <span class="nt">&quot;nonce&quot;</span><span class="p">:</span> <span class="p">[</span>
-              <span class="s2">&quot;B2lgXUX.......mCbRE&quot;</span>
+            <span class="nt">&quot;organisation_name&quot;</span><span class="p">:</span> <span class="p">[</span>
+              <span class="s2">&quot;infn-cc&quot;</span>
+            <span class="p">],</span>
+            <span class="nt">&quot;preferred_username&quot;</span><span class="p">:</span> <span class="p">[</span>
+              <span class="s2">&quot;ciangottini@infn.it&quot;</span>
             <span class="p">],</span>
             <span class="nt">&quot;principaltype&quot;</span><span class="p">:</span> <span class="p">[</span>
               <span class="s2">&quot;User&quot;</span>
             <span class="p">],</span>
             <span class="nt">&quot;sub&quot;</span><span class="p">:</span> <span class="p">[</span>
-              <span class="s2">&quot;CiQyZjhk..................ODYSBWRvZGFz&quot;</span>
+              <span class="s2">&quot;2f8......................286&quot;</span>
             <span class="p">],</span>
             <span class="nt">&quot;userid&quot;</span><span class="p">:</span> <span class="p">[</span>
-              <span class="s2">&quot;CB.............M6JTAX&quot;</span>
+              <span class="s2">&quot;ZX................BI&quot;</span>
             <span class="p">],</span>
             <span class="nt">&quot;username&quot;</span><span class="p">:</span> <span class="p">[</span>
-              <span class="s2">&quot;CBS1LDLN.......TAX&quot;</span>
+              <span class="s2">&quot;ZX4..................BI&quot;</span>
             <span class="p">]</span>
           <span class="p">},</span>
           <span class="nt">&quot;owner&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
-          <span class="nt">&quot;object&quot;</span><span class="p">:</span> <span class="s2">&quot;/&quot;</span><span class="p">,</span>
+             <span class="err">{</span><span class="nt">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;s3:GetObject&quot;</span><span class="p">},</span>
+          <span class="nt">&quot;object&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
           <span class="nt">&quot;claims&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="nt">&quot;accessKey&quot;</span><span class="p">:</span> <span class="s2">&quot;CBS........AX&quot;</span><span class="p">,</span>
-            <span class="nt">&quot;at_hash&quot;</span><span class="p">:</span> <span class="s2">&quot;zd...........Oaw&quot;</span><span class="p">,</span>
-            <span class="nt">&quot;aud&quot;</span><span class="p">:</span> <span class="s2">&quot;minio-auth&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;accessKey&quot;</span><span class="p">:</span> <span class="s2">&quot;................LG7BI&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;aud&quot;</span><span class="p">:</span> <span class="s2">&quot;b830.........................07d0d9&quot;</span><span class="p">,</span>
             <span class="nt">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;ciangottini@pg.infn.it&quot;</span><span class="p">,</span>
-            <span class="nt">&quot;email_verified&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
-            <span class="nt">&quot;exp&quot;</span><span class="p">:</span> <span class="mi">1587636946</span><span class="p">,</span>
-            <span class="nt">&quot;iat&quot;</span><span class="p">:</span> <span class="mi">1587550546</span><span class="p">,</span>
-            <span class="nt">&quot;iss&quot;</span><span class="p">:</span> <span class="s2">&quot;http://XX.XX.XX.XX:5556/dex&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;exp&quot;</span><span class="p">:</span> <span class="mi">1587633250</span><span class="p">,</span>
+            <span class="nt">&quot;groups&quot;</span><span class="p">:</span> <span class="p">[</span>
+              <span class="s2">&quot;developers&quot;</span>
+            <span class="p">],</span>
+            <span class="nt">&quot;iat&quot;</span><span class="p">:</span> <span class="mi">1587632650</span><span class="p">,</span>
+            <span class="nt">&quot;iss&quot;</span><span class="p">:</span> <span class="s2">&quot;https://iam.cloud.infn.it/&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;jti&quot;</span><span class="p">:</span> <span class="s2">&quot;ffe5.......7ce4e&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;kid&quot;</span><span class="p">:</span> <span class="s2">&quot;rsa1&quot;</span><span class="p">,</span>
             <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Diego Ciangottini&quot;</span><span class="p">,</span>
-            <span class="nt">&quot;nonce&quot;</span><span class="p">:</span> <span class="s2">&quot;B2.........bRE&quot;</span><span class="p">,</span>
-            <span class="nt">&quot;sub&quot;</span><span class="p">:</span> <span class="s2">&quot;CiQyZjhkY2M...................NjFkODkyODYSBWRvZGFz&quot;</span>
+            <span class="nt">&quot;organisation_name&quot;</span><span class="p">:</span> <span class="s2">&quot;infn-cc&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;preferred_username&quot;</span><span class="p">:</span> <span class="s2">&quot;ciangottini@infn.it&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;sub&quot;</span><span class="p">:</span> <span class="s2">&quot;2f8d..............61d89286&quot;</span>
           <span class="p">}</span>
-        <span class="p">}</span>
 </pre></div>
 
 
@@ -579,14 +571,14 @@ Questo e' rappresentato nel file di default <a href="https://github.com/dciangot
 <div class="codehilite"><pre><span></span><span class="c1"># Allow users to manage their own data.</span>
 <span class="n">allow</span> <span class="p">{</span>
   <span class="c1"># Extract username from email</span>
-  <span class="n">username</span> <span class="p">:</span><span class="o">=</span> <span class="n">split</span><span class="p">(</span><span class="n">lower</span><span class="p">(</span><span class="nb">input</span><span class="o">.</span><span class="n">claims</span><span class="o">.</span><span class="n">email</span><span class="p">),</span><span class="s2">&quot;@&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+  <span class="n">username</span> <span class="p">:</span><span class="o">=</span> <span class="n">split</span><span class="p">(</span><span class="n">lower</span><span class="p">(</span><span class="nb">input</span><span class="o">.</span><span class="n">claims</span><span class="o">.</span><span class="n">preferred_username</span><span class="p">),</span><span class="s2">&quot;@&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 
   <span class="c1"># verify that bucketname == username</span>
   <span class="nb">input</span><span class="o">.</span><span class="n">bucket</span> <span class="o">==</span> <span class="n">username</span>
 
   <span class="c1"># apply only when token auth happened </span>
   <span class="c1"># This is needed to keep admin user and password with full powers</span>
-  <span class="nb">input</span><span class="o">.</span><span class="n">claims</span><span class="o">.</span><span class="n">aud</span> <span class="o">==</span> <span class="s2">&quot;minio-cnaf&quot;</span>
+  <span class="nb">input</span><span class="o">.</span><span class="n">claims</span><span class="o">.</span><span class="n">organisation_name</span> <span class="o">==</span> <span class="s2">&quot;infn-cc&quot;</span>
 
   <span class="c1"># Apply user permissions to this request</span>
   <span class="n">permissions</span> <span class="p">:</span><span class="o">=</span> <span class="n">rl_permissions</span><span class="p">[</span><span class="s2">&quot;user&quot;</span><span class="p">]</span>
@@ -610,7 +602,7 @@ Questo e' rappresentato nel file di default <a href="https://github.com/dciangot
 
 <p>Mentre per limitare un subrange di chiamate a path del tipo <code>scratch/&lt;cognome&gt;</code> abbiamo bisogno di prendere altri input dalla richiesta e verificarli come segue:</p>
 <div class="codehilite"><pre><span></span><span class="n">allow</span> <span class="p">{</span>
-  <span class="n">username</span> <span class="p">:</span><span class="o">=</span> <span class="n">split</span><span class="p">(</span><span class="n">lower</span><span class="p">(</span><span class="nb">input</span><span class="o">.</span><span class="n">claims</span><span class="o">.</span><span class="n">email</span><span class="p">),</span><span class="s2">&quot;@&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+  <span class="n">username</span> <span class="p">:</span><span class="o">=</span> <span class="n">split</span><span class="p">(</span><span class="n">lower</span><span class="p">(</span><span class="nb">input</span><span class="o">.</span><span class="n">claims</span><span class="o">.</span><span class="n">preferred_username</span><span class="p">),</span><span class="s2">&quot;@&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 
   <span class="n">ref</span> <span class="p">:</span><span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">conditions</span><span class="o">.</span><span class="n">Referer</span><span class="p">[</span><span class="n">_</span><span class="p">]</span>
 
@@ -618,7 +610,7 @@ Questo e' rappresentato nel file di default <a href="https://github.com/dciangot
 
   <span class="n">re_match</span><span class="p">(</span> <span class="n">url</span> <span class="p">,</span> <span class="n">ref</span><span class="p">)</span>
 
-  <span class="nb">input</span><span class="o">.</span><span class="n">claims</span><span class="o">.</span><span class="n">aud</span> <span class="o">==</span> <span class="s2">&quot;minio-cnaf&quot;</span>
+  <span class="nb">input</span><span class="o">.</span><span class="n">claims</span><span class="o">.</span><span class="n">organisation_name</span> <span class="o">==</span> <span class="s2">&quot;infn-cc&quot;</span>
   <span class="n">permissions</span> <span class="p">:</span><span class="o">=</span> <span class="n">rl_permissions</span><span class="p">[</span><span class="s2">&quot;user&quot;</span><span class="p">]</span>
   <span class="n">p</span> <span class="p">:</span><span class="o">=</span> <span class="n">permissions</span><span class="p">[</span><span class="n">_</span><span class="p">]</span>
   <span class="n">p</span> <span class="o">==</span> <span class="p">{</span><span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="nb">input</span><span class="o">.</span><span class="n">action</span><span class="p">}</span>
@@ -665,6 +657,188 @@ Questo e' rappresentato nel file di default <a href="https://github.com/dciangot
 </ul>
 <div class="codehilite"><pre><span></span>mc admin trace myminio
 </pre></div>
+
+
+<h1 id="usare-server-side-encryption">Usare Server Side Encryption</h1>
+<div class="codehilite"><pre><span></span>MinIO uses a key-management-system (KMS) to support SSE-S3. If a client requests SSE-S3, or auto-encryption
+is enabled, the MinIO server encrypts each object with an unique object key which is protected by a master key
+managed by the KMS.
+MinIO supports commonly-used KMS implementations, like AWS-KMS or
+Hashicorp Vault via our KES project.
+KES makes it possible to scale your KMS horizontally with your storage infrastructure (MinIO clusters).
+Therefore, it wraps around the KMS implementation like this:
+
+       +-------+                 +-------+
+       | MinIO |                 | MinIO |
+       +---+---+                 +---+---+
+           |                         |
+      +----+-------------------------+----+---- KMS
+      |    |                         |    |
+      | +--+--+                   +--+--+ |
+      | | KES +--+             +--+ KES | |
+      | +-----+  |  +-------+  |  +-----+ |
+      |          +--+ Vault +--+          |
+      | +-----+  |  +-------+  |  +-----+ |
+      | | KES +--+             +--+ KES | |
+      | +--+--+                   +--+--+ |
+      |    |                         |    |
+      +----+-------------------------+----+---- KMS
+           |                         |
+       +---+---+                 +---+---+
+       | MinIO |                 | MinIO |
+       +-------+                 +-------+
+</pre></div>
+
+
+<p>Per semplicita' di seguito proveremo il setup con un solo server KES e un server minio. Al posto di Vault la chiave verra' salvata su FS.</p>
+<h2 id="riferimenti_1">Riferimenti</h2>
+<ul>
+<li><a href="https://docs.min.io/docs/how-to-secure-access-to-minio-server-with-tls">https://docs.min.io/docs/how-to-secure-access-to-minio-server-with-tls</a></li>
+<li><a href="https://docs.minio.io/docs/how-to-use-minio-s-server-side-encryption-with-aws-cli">https://docs.minio.io/docs/how-to-use-minio-s-server-side-encryption-with-aws-cli</a></li>
+<li><a href="[https://github.com/minio/kes/wiki/MinIO-Object-Storage#kes-server-setup">https://github.com/minio/kes/wiki/MinIO-Object-Storage#kes-server-setup</a></li>
+<li><a href="https://github.com/minio/kes/wiki/Server-API">https://github.com/minio/kes/wiki/Server-API</a></li>
+</ul>
+<h2 id="requirements">Requirements</h2>
+<div class="codehilite"><pre><span></span><span class="c1"># Install utility for self signed certificate generation</span>
+sudo wget https://github.com/DODAS-TS/dodas-x509/releases/download/v0.0.2/dodas-x509 -O /usr/local/bin/dodas-x509
+
+<span class="c1"># Install Minio KES</span>
+wget https://github.com/minio/kes/releases/latest/download/linux-amd64.zip
+unzip linux-amd64.zip
+sudo mv kes /usr/local/bin/
+
+<span class="c1"># Create folder for certificates and keys</span>
+mkdir certs
+mkdir keys
+
+<span class="c1"># Create folder for Minoi encryption test</span>
+mkdir data_encrypt
+</pre></div>
+
+
+<h2 id="generate-self-signed-certificates">Generate self-signed certificates</h2>
+<div class="codehilite"><pre><span></span><span class="c1"># Generate KES server certificate</span>
+dodas-x509 --hostname <span class="m">127</span>.0.0.1 --ca-path <span class="nv">$PWD</span>/certs --cert-path <span class="nv">$PWD</span>/certs --cert-name kes --ca-name KES
+
+<span class="c1"># Generate Minio server certificate</span>
+dodas-x509 --hostname &lt;public IP minio&gt; --ca-path <span class="nv">$PWD</span>/certs --cert-path <span class="nv">$PWD</span>/certs --cert-name minio --ca-name MINIO
+
+<span class="c1"># Use the minio naming convention for certificates</span>
+mv certs/minio.pem certs/public.crt
+mv certs/minio.key certs/private.key
+</pre></div>
+
+
+<h2 id="creare-utenti-kes">Creare utenti KES</h2>
+<p>Definiamo un utente con permessi admin (root) e uno per il server Minio:</p>
+<div class="codehilite"><pre><span></span><span class="c1"># Creation of KES user root</span>
+kes tool identity new --key<span class="o">=</span><span class="s2">&quot;certs/root.key&quot;</span> --cert<span class="o">=</span><span class="s2">&quot;certs/root.cert&quot;</span> root
+
+<span class="c1"># Creation of KES user Minio</span>
+kes tool identity new --key<span class="o">=</span><span class="s2">&quot;certs/minio.key&quot;</span> --cert<span class="o">=</span><span class="s2">&quot;certs/minio.cert&quot;</span> MinIO
+</pre></div>
+
+
+<p>Adesso in cert dovrebbero essere stati create i certificati indicati, che puo' indicarci lo user ID di KES per questi certificati con:</p>
+<div class="codehilite"><pre><span></span>kes tool identity of certs/root.cert
+
+kes tool identity of certs/minio.cert
+</pre></div>
+
+
+<h2 id="file-di-configurazione-kes">File di configurazione KES</h2>
+<p>Il file di configurazione (<code>kes.config</code>) per questo setup consiste nell'indicare i cert per TLS e quello per autorizzare Minio a ritirare e creare chiavi.</p>
+<div class="codehilite"><pre><span></span>address = &quot;0.0.0.0:7373&quot;
+root    = &quot;&lt;value obtained with: `kes tool identity of certs/root.cert`&gt;&quot;
+
+[tls]
+key  = &quot;kes.key&quot;
+cert = &quot;kes.pem&quot;
+
+[policy.prod-app] 
+paths      = [ &quot;/v1/key/create/my-minio-key&quot;, 
+               &quot;/v1/key/generate/my-minio-key&quot; ,
+               &quot;/v1/key/decrypt/my-minio-key&quot; ]
+identities = [ &quot;&lt;value obtained with: `kes tool identity of certs/minio.cert`&gt;&quot; ]
+
+# We use the local filesystem for simplicity.
+# We could use Vault for instance.
+[keystore.fs]
+path    = &quot;./keys&quot; # Choose a directory for the secret keys
+</pre></div>
+
+
+<h2 id="docker-compose-minio-opa-kes">Docker Compose: minio, opa, kes</h2>
+<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">version</span><span class="p p-Indicator">:</span> <span class="s">&#39;3.7&#39;</span>
+<span class="l l-Scalar l-Scalar-Plain">services</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">opa</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">image</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">openpolicyagent/opa:0.18.0</span>
+    <span class="l l-Scalar l-Scalar-Plain">network_mode</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">host</span>
+    <span class="l l-Scalar l-Scalar-Plain">command</span><span class="p p-Indicator">:</span>
+      <span class="p p-Indicator">-</span> <span class="s">&quot;run&quot;</span>
+      <span class="p p-Indicator">-</span> <span class="s">&quot;--server&quot;</span>
+      <span class="p p-Indicator">-</span> <span class="s">&quot;--log-level=debug&quot;</span>
+      <span class="p p-Indicator">-</span> <span class="s">&quot;--log-format=text&quot;</span>
+      <span class="p p-Indicator">-</span> <span class="s">&quot;--addr=0.0.0.0:8181&quot;</span>
+      <span class="p p-Indicator">-</span> <span class="s">&quot;/policies&quot;</span>
+    <span class="l l-Scalar l-Scalar-Plain">volumes</span><span class="p p-Indicator">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">./policies:/policies</span>
+
+  <span class="l l-Scalar l-Scalar-Plain">minio</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">network_mode</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">host</span>
+    <span class="l l-Scalar l-Scalar-Plain">image</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">dciangot/minio</span>
+    <span class="l l-Scalar l-Scalar-Plain">command</span><span class="p p-Indicator">:</span>
+      <span class="p p-Indicator">-</span> <span class="s">&quot;server&quot;</span>
+      <span class="p p-Indicator">-</span> <span class="s">&quot;--address&quot;</span>
+      <span class="p p-Indicator">-</span> <span class="s">&quot;:9000&quot;</span>
+      <span class="p p-Indicator">-</span> <span class="s">&quot;/data&quot;</span>
+    <span class="l l-Scalar l-Scalar-Plain">environment</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">MINIO_POLICY_OPA_URL</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">http://localhost:8181/v1/data/httpapi/authz/allow</span>
+      <span class="l l-Scalar l-Scalar-Plain">MINIO_IDENTITY_OPENID_CLIENT_ID</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;IAM client ID&gt;</span>
+      <span class="l l-Scalar l-Scalar-Plain">MINIO_IDENTITY_OPENID_CONFIG_URL</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">https://iam-demo.cloud.cnaf.infn.it/.well-known/openid-configuration</span>
+      <span class="l l-Scalar l-Scalar-Plain">MINIO_KMS_KES_ENDPOINT</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">https://127.0.0.1:7373</span>
+      <span class="l l-Scalar l-Scalar-Plain">MINIO_KMS_KES_CERT_FILE</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">/root/.minio/certs/minio.cert</span>
+      <span class="l l-Scalar l-Scalar-Plain">MINIO_KMS_KES_KEY_FILE</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">/root/.minio/certs/minio.key</span>
+      <span class="l l-Scalar l-Scalar-Plain">MINIO_KMS_KES_CA_PATH</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">/root/.minio/certs/kes.pem</span>
+      <span class="l l-Scalar l-Scalar-Plain">MINIO_KMS_KES_KEY_NAME</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my-minio-key</span>
+      <span class="l l-Scalar l-Scalar-Plain">MINIO_KMS_AUTO_ENCRYPTION</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+    <span class="l l-Scalar l-Scalar-Plain">volumes</span><span class="p p-Indicator">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">./data_encrypt:/data</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">./certs:/root/.minio/certs</span>
+
+  <span class="l l-Scalar l-Scalar-Plain">kes</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">network_mode</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">host</span>
+    <span class="l l-Scalar l-Scalar-Plain">image</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">minio/kes</span>
+    <span class="l l-Scalar l-Scalar-Plain">command</span><span class="p p-Indicator">:</span>
+      <span class="p p-Indicator">-</span> <span class="s">&quot;server&quot;</span>
+      <span class="p p-Indicator">-</span> <span class="s">&quot;--mtls-auth=ignore&quot;</span>
+      <span class="p p-Indicator">-</span> <span class="s">&quot;--config=/root/config/server-config.toml&quot;</span>
+    <span class="l l-Scalar l-Scalar-Plain">volumes</span><span class="p p-Indicator">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">./certs:/root/certs</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">./kes.config:/root/config/server-config.toml</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">./keys:/keys</span>
+</pre></div>
+
+
+<h3 id="restart-del-docker-compose-precedente">Restart del docker compose precedente</h3>
+<div class="codehilite"><pre><span></span>make stop
+
+make start
+</pre></div>
+
+
+<h2 id="generare-una-chiave-di-cifratura-per-minio">Generare una chiave di cifratura per Minio</h2>
+<p>Generiamo una chiave con l'utente minio:</p>
+<div class="codehilite"><pre><span></span><span class="nb">cd</span> certs
+<span class="nb">export</span> <span class="nv">KES_CLIENT_TLS_CERT_FILE</span><span class="o">=</span>minio.cert
+<span class="nb">export</span> <span class="nv">KES_CLIENT_TLS_KEY_FILE</span><span class="o">=</span>minio.key
+kes key create my-minio-key -k
+<span class="nb">cd</span> -
+</pre></div>
+
+
+<p>Ora in <code>.keys</code> dovrebbe essere apparsa la chiave.</p>
+<p>Dovrebbe essere tutto pronto per poter andare a https://<indirizzo pubblico Minio>:9000 creare un bucket con il mio IAM username o con <code>minioadmin:minioadmin</code>. Tutto quello che verra' caricato nel bucket apparira' in <code>./data_encrypt</code>.</p>
                 
                   
                 

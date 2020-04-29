@@ -855,7 +855,7 @@ mkdir data_encrypt
 
 <h2 id="generate-self-signed-certificates">Generate self-signed certificates</h2>
 <div class="codehilite"><pre><span></span><span class="c1"># Generate KES server certificate</span>
-dodas-x509 --hostname <span class="m">127</span>.0.0.1 --ca-path <span class="nv">$PWD</span>/certs --cert-path <span class="nv">$PWD</span>/certs --cert-name kes --ca-name KES
+dodas-x509 --hostname <span class="m">127</span>.0.0.1 --ca-path <span class="nv">$PWD</span>/certs/CAs --cert-path <span class="nv">$PWD</span>/certs --cert-name kes --ca-name KES
 
 <span class="c1"># Generate Minio server certificate</span>
 dodas-x509 --hostname &lt;public IP minio&gt; --ca-path <span class="nv">$PWD</span>/certs/CAs --cert-path <span class="nv">$PWD</span>/certs --cert-name minio --ca-name MINIO

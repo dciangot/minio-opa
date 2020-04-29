@@ -845,7 +845,7 @@ unzip linux-amd64.zip
 sudo mv kes /usr/local/bin/
 
 <span class="c1"># Create folder for certificates and keys</span>
-mkdir certs
+mkdir -p certs/CAs
 mkdir keys
 
 <span class="c1"># Create folder for Minoi encryption test</span>
@@ -858,7 +858,7 @@ mkdir data_encrypt
 dodas-x509 --hostname <span class="m">127</span>.0.0.1 --ca-path <span class="nv">$PWD</span>/certs --cert-path <span class="nv">$PWD</span>/certs --cert-name kes --ca-name KES
 
 <span class="c1"># Generate Minio server certificate</span>
-dodas-x509 --hostname &lt;public IP minio&gt; --ca-path <span class="nv">$PWD</span>/certs --cert-path <span class="nv">$PWD</span>/certs --cert-name minio --ca-name MINIO
+dodas-x509 --hostname &lt;public IP minio&gt; --ca-path <span class="nv">$PWD</span>/certs/CAs --cert-path <span class="nv">$PWD</span>/certs --cert-name minio --ca-name MINIO
 
 <span class="c1"># Use the minio naming convention for certificates</span>
 mv certs/minio.pem certs/public.crt

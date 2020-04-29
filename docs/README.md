@@ -45,119 +45,111 @@ Di seguito la spiegazione di come queste policy sono configurate in opa
 Un tipico input che arriva al server OPA da Minio dopo l'autenticazione con token IAM e' in questa forma:
 
 ```json
-"input": {
-          "account": "CBS1LDLNI....M6JTAX",
-          "action": "s3:PutObject",
+      {
+        "input": {
+          "account": "Z........................BI",
+          "action": "s3:CreateBucket",
           "bucket": "ciangottini",
           "conditions": {
-            "Accept": [
-              "*/*"
-            ],
             "Accept-Encoding": [
-              "gzip, deflate"
-            ],
-            "Accept-Language": [
-              "it-IT,it;q=0.9,en-US;q=0.8,en;q=0.7,fr;q=0.6,es;q=0.5"
+              "identity"
             ],
             "Authorization": [
-              "Bearer ey...................cBHpoCoh_2ueHQ"
-            ],
-            "Connection": [
-              "keep-alive"
+              "AWS4-HMAC-SHA256 Credential=ZX4QOC80CNLHIBCLG7BI/20200423/us-east-1/s3/aws4_request, SignedHeaders=host;user-agent;x-amz-content-sha256;x-amz-date;x-amz-security-token, Signature=2926934a3a1380ff8c80c20faeb187a2ddcc42b47a9075fb111987c890811618"
             ],
             "Content-Length": [
-              "101"
+              "0"
             ],
-            "Content-Type": [
-              "application/json"
-            ],
-            "Cookie": [
-              "request_uri=Lw==; OAuth_Token_Request_State=62ce.....1-cb48afaf0274"
-            ],
-            "CurrenTime": [
-              "2020-04-22T10:15:51Z"
-            ],
-            "Delimiter": [
-              "/"
+            "CurrentTime": [
+              "2020-04-23T09:09:31Z"
             ],
             "EpochTime": [
-              "1587550551"
-            ],
-            "Origin": [
-              "http://90.147.XXX.92:9000"
-            ],
-            "Prefix": [
-              ""
+              "1587632971"
             ],
             "Referer": [
-              "http://90.XX.XX.XX:9000/minio/scratch/",
-              "http://90.XX.XX.XX:9000/minio/scratch/"
+              ""
             ],
             "SecureTransport": [
               "false"
             ],
             "SourceIp": [
-              "XXX.XX.77.X"
+              "188.XX3.77.XX"
             ],
             "User-Agent": [
-              "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.113 Safari/537.36"
+              "MinIO (Linux; x86_64) minio-py/5.0.10"
             ],
             "UserAgent": [
-              "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.113 Safari/537.36"
+              "MinIO (Linux; x86_64) minio-py/5.0.10"
+            ],
+            "X-Amz-Content-Sha256": [
+              "e3b.................852b855"
             ],
             "X-Amz-Date": [
-              "20200422T101551Z"
+              "20200423T090933Z"
+            ],
+            "X-Amz-Security-Token": [
+              "eyJhbGciO............vqgpJO9vWgQ3oc3tDOnP4A"
             ],
             "accessKey": [
-              "CBS.............WM6JTAX"
-            ],
-            "at_hash": [
-              "zdvCdgj........ylb8olOaw"
+              "ZX4QOC80CNLHIBCLG7BI"
             ],
             "aud": [
-              "minio-auth"
+              "b8.........................d0d9"
             ],
             "email": [
               "ciangottini@pg.infn.it"
             ],
             "iss": [
-              "http://XX.XX.XX.XX:5556/dex"
+              "https://iam.cloud.infn.it/"
+            ],
+            "jti": [
+              "ffe5...................ce4e"
+            ],
+            "kid": [
+              "rsa1"
             ],
             "name": [
               "Diego Ciangottini"
             ],
-            "nonce": [
-              "B2lgXUX.......mCbRE"
+            "organisation_name": [
+              "infn-cc"
+            ],
+            "preferred_username": [
+              "ciangottini@infn.it"
             ],
             "principaltype": [
               "User"
             ],
             "sub": [
-              "CiQyZjhk..................ODYSBWRvZGFz"
+              "2f8......................286"
             ],
             "userid": [
-              "CB.............M6JTAX"
+              "ZX................BI"
             ],
             "username": [
-              "CBS1LDLN.......TAX"
+              "ZX4..................BI"
             ]
           },
           "owner": false,
-          "object": "/",
+             {"action": "s3:GetObject"},
+          "object": "",
           "claims": {
-            "accessKey": "CBS........AX",
-            "at_hash": "zd...........Oaw",
-            "aud": "minio-auth",
+            "accessKey": "................LG7BI",
+            "aud": "b830.........................07d0d9",
             "email": "ciangottini@pg.infn.it",
-            "email_verified": true,
-            "exp": 1587636946,
-            "iat": 1587550546,
-            "iss": "http://XX.XX.XX.XX:5556/dex",
+            "exp": 1587633250,
+            "groups": [
+              "developers"
+            ],
+            "iat": 1587632650,
+            "iss": "https://iam.cloud.infn.it/",
+            "jti": "ffe5.......7ce4e",
+            "kid": "rsa1",
             "name": "Diego Ciangottini",
-            "nonce": "B2.........bRE",
-            "sub": "CiQyZjhkY2M...................NjFkODkyODYSBWRvZGFz"
+            "organisation_name": "infn-cc",
+            "preferred_username": "ciangottini@infn.it",
+            "sub": "2f8d..............61d89286"
           }
-        }
 ```
 
 Tutti questi parametri possono essere utilizzati da OPA per decidere se autorizzare o no la richiesta. Si vede inoltre che MINIO ha processato l'`id_token` dell'utente ricavandone i campi `claims`.
@@ -193,14 +185,14 @@ Ora possiamo decidere in quali casi applicare questi permessi sulla base degli i
 # Allow users to manage their own data.
 allow {
   # Extract username from email
-  username := split(lower(input.claims.email),"@")[0]
+  username := split(lower(input.claims.preferred_username),"@")[0]
 
   # verify that bucketname == username
   input.bucket == username
 
   # apply only when token auth happened 
   # This is needed to keep admin user and password with full powers
-  input.claims.aud == "minio-cnaf"
+  input.claims.organisation_name == "infn-cc"
 
   # Apply user permissions to this request
   permissions := rl_permissions["user"]
@@ -226,7 +218,7 @@ Mentre per limitare un subrange di chiamate a path del tipo `scratch/<cognome>` 
 
 ```python
 allow {
-  username := split(lower(input.claims.email),"@")[0]
+  username := split(lower(input.claims.preferred_username),"@")[0]
 
   ref := input.conditions.Referer[_]
 
@@ -234,7 +226,7 @@ allow {
 
   re_match( url , ref)
 
-  input.claims.aud == "minio-cnaf"
+  input.claims.organisation_name == "infn-cc"
   permissions := rl_permissions["user"]
   p := permissions[_]
   p == {"action": input.action}
@@ -282,3 +274,198 @@ mc config host add myminio http://localhost:9000 minioadmin minioadmin
 ```bash
 mc admin trace myminio
 ```
+
+# Usare Server Side Encryption
+
+```
+MinIO uses a key-management-system (KMS) to support SSE-S3. If a client requests SSE-S3, or auto-encryption
+is enabled, the MinIO server encrypts each object with an unique object key which is protected by a master key
+managed by the KMS.
+MinIO supports commonly-used KMS implementations, like AWS-KMS or
+Hashicorp Vault via our KES project.
+KES makes it possible to scale your KMS horizontally with your storage infrastructure (MinIO clusters).
+Therefore, it wraps around the KMS implementation like this:
+
+       +-------+                 +-------+
+       | MinIO |                 | MinIO |
+       +---+---+                 +---+---+
+           |                         |
+      +----+-------------------------+----+---- KMS
+      |    |                         |    |
+      | +--+--+                   +--+--+ |
+      | | KES +--+             +--+ KES | |
+      | +-----+  |  +-------+  |  +-----+ |
+      |          +--+ Vault +--+          |
+      | +-----+  |  +-------+  |  +-----+ |
+      | | KES +--+             +--+ KES | |
+      | +--+--+                   +--+--+ |
+      |    |                         |    |
+      +----+-------------------------+----+---- KMS
+           |                         |
+       +---+---+                 +---+---+
+       | MinIO |                 | MinIO |
+       +-------+                 +-------+
+```
+
+Per semplicita' di seguito proveremo il setup con un solo server KES e un server minio. Al posto di Vault la chiave verra' salvata su FS.
+
+## Riferimenti
+- [https://docs.min.io/docs/how-to-secure-access-to-minio-server-with-tls](https://docs.min.io/docs/how-to-secure-access-to-minio-server-with-tls)
+- [https://docs.minio.io/docs/how-to-use-minio-s-server-side-encryption-with-aws-cli](https://docs.minio.io/docs/how-to-use-minio-s-server-side-encryption-with-aws-cli)
+- [https://github.com/minio/kes/wiki/MinIO-Object-Storage#kes-server-setup]([https://github.com/minio/kes/wiki/MinIO-Object-Storage#kes-server-setup)
+- [https://github.com/minio/kes/wiki/Server-API](https://github.com/minio/kes/wiki/Server-API)
+
+## Requirements
+
+```bash
+# Install utility for self signed certificate generation
+sudo wget https://github.com/DODAS-TS/dodas-x509/releases/download/v0.0.2/dodas-x509 -O /usr/local/bin/dodas-x509
+
+# Install Minio KES
+wget https://github.com/minio/kes/releases/latest/download/linux-amd64.zip
+unzip linux-amd64.zip
+sudo mv kes /usr/local/bin/
+
+# Create folder for certificates and keys
+mkdir certs
+mkdir keys
+
+# Create folder for Minoi encryption test
+mkdir data_encrypt
+```
+
+## Generate self-signed certificates
+
+```bash
+# Generate KES server certificate
+dodas-x509 --hostname 127.0.0.1 --ca-path $PWD/certs --cert-path $PWD/certs --cert-name kes --ca-name KES
+
+# Generate Minio server certificate
+dodas-x509 --hostname <public IP minio> --ca-path $PWD/certs --cert-path $PWD/certs --cert-name minio --ca-name MINIO
+
+# Use the minio naming convention for certificates
+mv certs/minio.pem certs/public.crt
+mv certs/minio.key certs/private.key
+```
+
+## Creare utenti KES
+
+Definiamo un utente con permessi admin (root) e uno per il server Minio:
+
+```bash
+# Creation of KES user root
+kes tool identity new --key="certs/root.key" --cert="certs/root.cert" root
+
+# Creation of KES user Minio
+kes tool identity new --key="certs/minio.key" --cert="certs/minio.cert" MinIO
+```
+
+Adesso in cert dovrebbero essere stati create i certificati indicati, che puo' indicarci lo user ID di KES per questi certificati con:
+
+```bash
+kes tool identity of certs/root.cert
+
+kes tool identity of certs/minio.cert
+```
+
+
+## File di configurazione KES
+
+Il file di configurazione (`kes.config`) per questo setup consiste nell'indicare i cert per TLS e quello per autorizzare Minio a ritirare e creare chiavi.
+
+```
+address = "0.0.0.0:7373"
+root    = "<value obtained with: `kes tool identity of certs/root.cert`>"
+
+[tls]
+key  = "kes.key"
+cert = "kes.pem"
+
+[policy.prod-app] 
+paths      = [ "/v1/key/create/my-minio-key", 
+               "/v1/key/generate/my-minio-key" ,
+               "/v1/key/decrypt/my-minio-key" ]
+identities = [ "<value obtained with: `kes tool identity of certs/minio.cert`>" ]
+
+# We use the local filesystem for simplicity.
+# We could use Vault for instance.
+[keystore.fs]
+path    = "./keys" # Choose a directory for the secret keys
+```
+
+## Docker Compose: minio, opa, kes
+
+```yaml
+version: '3.7'
+services:
+  opa:
+    image: openpolicyagent/opa:0.18.0
+    network_mode: host
+    command:
+      - "run"
+      - "--server"
+      - "--log-level=debug"
+      - "--log-format=text"
+      - "--addr=0.0.0.0:8181"
+      - "/policies"
+    volumes:
+      - ./policies:/policies
+
+  minio:
+    network_mode: host
+    image: dciangot/minio
+    command:
+      - "server"
+      - "--address"
+      - ":9000"
+      - "/data"
+    environment:
+      MINIO_POLICY_OPA_URL: http://localhost:8181/v1/data/httpapi/authz/allow
+      MINIO_IDENTITY_OPENID_CLIENT_ID: <IAM client ID>
+      MINIO_IDENTITY_OPENID_CONFIG_URL: https://iam-demo.cloud.cnaf.infn.it/.well-known/openid-configuration
+      MINIO_KMS_KES_ENDPOINT: https://127.0.0.1:7373
+      MINIO_KMS_KES_CERT_FILE: /root/.minio/certs/minio.cert
+      MINIO_KMS_KES_KEY_FILE: /root/.minio/certs/minio.key
+      MINIO_KMS_KES_CA_PATH: /root/.minio/certs/kes.pem
+      MINIO_KMS_KES_KEY_NAME: my-minio-key
+      MINIO_KMS_AUTO_ENCRYPTION: 1
+    volumes:
+      - ./data_encrypt:/data
+      - ./certs:/root/.minio/certs
+
+  kes:
+    network_mode: host
+    image: minio/kes
+    command:
+      - "server"
+      - "--mtls-auth=ignore"
+      - "--config=/root/config/server-config.toml"
+    volumes:
+      - ./certs:/root/certs
+      - ./kes.config:/root/config/server-config.toml
+      - ./keys:/keys
+```
+
+### Restart del docker compose precedente
+
+```bash
+make stop
+
+make start
+```
+
+## Generare una chiave di cifratura per Minio
+
+Generiamo una chiave con l'utente minio:
+
+```bash
+cd certs
+export KES_CLIENT_TLS_CERT_FILE=minio.cert
+export KES_CLIENT_TLS_KEY_FILE=minio.key
+kes key create my-minio-key -k
+cd -
+```
+
+Ora in `.keys` dovrebbe essere apparsa la chiave.
+
+Dovrebbe essere tutto pronto per poter andare a https://<indirizzo pubblico Minio>:9000 creare un bucket con il mio IAM username o con `minioadmin:minioadmin`. Tutto quello che verra' caricato nel bucket apparira' in `./data_encrypt`.

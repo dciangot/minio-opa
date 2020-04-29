@@ -420,6 +420,14 @@ services:
       - ./keys:/keys
 ```
 
+### Restart del docker compose precedente
+
+```bash
+make stop
+
+make start
+```
+
 ## Generare una chiave di cifratura per Minio
 
 Generiamo una chiave con l'utente minio:

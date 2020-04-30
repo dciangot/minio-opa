@@ -36,7 +36,7 @@
     
     
       
-        <title>Usare Server Side Encryption - MINIO with OPA and IAM</title>
+        <title>Server side encryption - MINIO with OPA and IAM</title>
       
     
     
@@ -111,7 +111,7 @@
             </span>
             <span class="md-header-nav__topic">
               
-                Usare Server Side Encryption
+                Server side encryption
               
             </span>
           
@@ -232,11 +232,104 @@
       
       
 
+  
 
-  <li class="md-nav__item">
-    <a href="../Encryption.md" title="Server side encryption" class="md-nav__link">
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Server side encryption
+      </label>
+    
+    <a href="./" title="Server side encryption" class="md-nav__link md-nav__link--active">
       Server side encryption
     </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#riferimenti" class="md-nav__link">
+    Riferimenti
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#requirements" class="md-nav__link">
+    Requirements
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#generate-self-signed-certificates" class="md-nav__link">
+    Generate self-signed certificates
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creare-utenti-kes" class="md-nav__link">
+    Creare utenti KES
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#file-di-configurazione-kes" class="md-nav__link">
+    File di configurazione KES
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#docker-compose-minio-opa-kes" class="md-nav__link">
+    Docker Compose: minio, opa, kes
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#restart-del-docker-compose-precedente" class="md-nav__link">
+    Restart del docker compose precedente
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#generare-una-chiave-di-cifratura-per-minio" class="md-nav__link">
+    Generare una chiave di cifratura per Minio
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
   </li>
 
     
@@ -410,7 +503,7 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/dciangot/minio-opa/edit/master/docs/Encyption.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="https://github.com/dciangot/minio-opa/edit/master/docs/Encryption.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
                 <h1 id="usare-server-side-encryption">Usare Server Side Encryption</h1>
@@ -628,6 +721,41 @@ kes key create my-minio-key -k
       
         
 <footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href=".." title="Home" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Home
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../WebUI/" title="WebUI" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                WebUI
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">

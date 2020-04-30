@@ -85,7 +85,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="#setup-oidc-agent-with-demo-iam-instance" tabindex="1" class="md-skip">
+      <a href="#setup-oidc-agent-per-istanza-iam-demo" tabindex="1" class="md-skip">
         Skip to content
       </a>
     
@@ -266,9 +266,45 @@
       
     
     
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Setup OIDC-agent
+      </label>
+    
     <a href="./" title="Setup OIDC-agent" class="md-nav__link md-nav__link--active">
       Setup OIDC-agent
     </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#requirement" class="md-nav__link">
+    Requirement
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configurare-laccount-iam-demo" class="md-nav__link">
+    Configurare l'account IAM-demo
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
     
   </li>
 
@@ -338,6 +374,29 @@
     
   
   
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#requirement" class="md-nav__link">
+    Requirement
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configurare-laccount-iam-demo" class="md-nav__link">
+    Configurare l'account IAM-demo
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -351,7 +410,97 @@
                   <a href="https://github.com/dciangot/minio-opa/edit/master/docs/Oidc.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                <h1 id="setup-oidc-agent-with-demo-iam-instance">Setup oidc-agent with demo IAM instance</h1>
+                <h1 id="setup-oidc-agent-per-istanza-iam-demo">Setup oidc-agent per istanza IAM-demo</h1>
+<p>Oidc-agent ci aiutera' a gestire in maniera automatica e sicura i nostri Token per l'accesso ai dati.</p>
+<h2 id="requirement">Requirement</h2>
+<ul>
+<li>Installare oidc-agent come descritto <a href="https://indigo-dc.gitbook.io/oidc-agent/installation">qui</a></li>
+<li>Far partire l'agente:</li>
+</ul>
+<div class="codehilite"><pre><span></span><span class="nb">eval</span> <span class="sb">`</span>oidc-agent<span class="sb">`</span>
+</pre></div>
+
+
+<h2 id="configurare-laccount-iam-demo">Configurare l'account IAM-demo</h2>
+<p>Iniziamo creando il nostro account con il nome <code>demo</code>:</p>
+<div class="codehilite"><pre><span></span>$ oidc-gen demo
+</pre></div>
+
+
+<p>Ci verra' chiesto di scegliere il nome dello issuer. Scrivere <code>https://iam-demo.cloud.cnaf.infn.it/</code> e premere invio </p>
+<div class="codehilite"><pre><span></span>[1] https://iam-escape.cloud.cnaf.infn.it/
+[2] https://iam-demo.cloud.cnaf.infn.it/
+[3] https://accounts.google.com/
+[4] https://iam-test.indigo-datacloud.eu/
+[5] https://iam.deep-hybrid-datacloud.eu/
+[6] https://iam.extreme-datacloud.eu/
+[7] https://b2access.eudat.eu/oauth2/
+[8] https://b2access-integration.fz-juelich.de/oauth2
+[9] https://unity.eudat-aai.fz-juelich.de/oauth2/
+[10] https://unity.helmholtz-data-federation.de/oauth2/
+[11] https://login.helmholtz-data-federation.de/oauth2/
+[12] https://services.humanbrainproject.eu/oidc/
+[13] https://aai.egi.eu/oidc/
+[14] https://aai-dev.egi.eu/oidc
+[15] https://login.elixir-czech.org/oidc/
+[16] https://oidc.scc.kit.edu/auth/realms/kit/
+[17] https://wlcg.cloud.cnaf.infn.it/
+Issuer [https://iam-escape.cloud.cnaf.infn.it/]:  https://iam-demo.cloud.cnaf.infn.it/   
+</pre></div>
+
+
+<p>Poi digitare <code>max</code> per richiedere tutti gli scope possibili e premere invio:</p>
+<div class="codehilite"><pre><span></span>This issuer supports the following scopes: openid profile email address phone offline_access
+Space delimited list of scopes or &#39;max&#39; [openid profile offline_access]: max
+</pre></div>
+
+
+<p>Ora dovrebbe apparire un messaggio del tipo:</p>
+<div class="codehilite"><pre><span></span>Registering Client ...
+Generating account configuration ...
+accepted
+To continue and approve the registered client visit the following URL in a Browser of your choice:
+https://iam-demo.cloud.cnaf.infn.it/authorize?response_type=code&amp;client_id=c70edf20-51e6-3ae753c&amp;redirect_uri=http://localhost:8080&amp;scope=address phone openid email profile offline_access&amp;access_type=offline&amp;prompt=consent&amp;state=0:BNF-HR38LjQ4MA&amp;code_challenge_method=S256&amp;code_challenge=brx7x6RuQI5rkzlkGwh2u2z7vCVctSlQ
+</pre></div>
+
+
+<p>Se non si apre in automatico una finestra nel vostro browser copiate a mano il link prodotto e inseritelo nel vostro browser.</p>
+<p>Portate a fine il login on IAM. Se avete problemi di timeout durante il caricamento della pagina, riprovate fino a che non si apre e quando riuscite tornate al terminale.</p>
+<p>Se la sessione e' andata in timeout, sara' apparso un messaggio del tipo:</p>
+<div class="codehilite"><pre><span></span>Polling oidc-agent to get the generated account configuration .......................
+Polling is boring. Already tried 20 times. I stop now.
+Please press Enter to try it again.
+</pre></div>
+
+
+<p>Fate come dice e cliccate invio. Dovrebbe essere ora andato tutto a buon fine e vi verra' chiesto di immetere una password che serve per criptare le vostre credenziali:</p>
+<div class="codehilite"><pre><span></span>success
+The generated account config was successfully added to oidc-agent. You don&#39;t have to run oidc-add.
+Enter encryption password for account configuration &#39;demo&#39;:
+</pre></div>
+
+
+<p>Inseritene una a scelta e proseguite. Il setup e' concluso. Controllate che tutto sia ok con:</p>
+<div class="codehilite"><pre><span></span>$ oidc-token demo
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span>eyJraWQiOiJyc2ExIiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiJlZjVmMTgzZC00ZDllLTRmMmEtOWRjNi0zZjEzNTlmMTliMzUiLCJpc3MiOiJodHRwczpcL1wvaWFtLWRlbW8uY2xvdWQuY25hZi5pbmZuLml0XC8iLCJuYW1lIjoiRGllZ28gQ2lhbmdvdHRpbmk....
+</pre></div>
+
+
+<p>Questo significa che il nostro agente riesce a ritirare correttamente i token dal servizio IAM.</p>
+<p>Per avere a disposizione questo tool su ogni sessione bash, includere nel vostro profile on in bashrc:</p>
+<div class="codehilite"><pre><span></span><span class="nb">eval</span> <span class="sb">`</span>oidc-keychain<span class="sb">`</span>
+</pre></div>
+
+
+<p>Inoltre potrebbe essere necessario ricaricare l'account <code>demo</code> dopo ogni riavvio del PC. Per farlo basta:</p>
+<div class="codehilite"><pre><span></span>oidc-gen --reauthenticate demo
+</pre></div>
+
+
+<p>e seguire la procedura proposta.</p>
                 
                   
                 

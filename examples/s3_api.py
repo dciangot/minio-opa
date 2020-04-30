@@ -6,6 +6,8 @@ import requests
 import xmltodict
 import os
 import urllib3
+import uuid
+import io
 
 token = os.getenv("TOKEN")
 
@@ -68,8 +70,8 @@ filename = "%s.txt" % uuid.uuid1()
 
 #put a object in a sub-directory of the bucket
 try:
-    with open('localfile.txt', 'rb') as file_data:
-        file_stat = os.stat('localfile.txt')
+    with open('requirements.txt', 'rb') as file_data:
+        file_stat = os.stat('requirements.txt')
         minioClient.put_object( username, 'my_object/test_objec_%s' % filename, file_data, file_stat.st_size)
 except ResponseError as err:
     print(err)

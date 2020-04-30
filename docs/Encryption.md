@@ -206,5 +206,5 @@ Dovrebbe essere tutto pronto per poter andare a https://<indirizzo pubblico Mini
 - Per configurare il client per accesso admin:
 
 ```bash
-mc config host add myminio https://<indirizzo pubblico Minio>:9000 minioadmin minioadmin
+mc config host add --insecure myminio https://<indirizzo pubblico Minio>:9000 minioadmin minioadmin
 ```

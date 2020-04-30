@@ -702,7 +702,7 @@ kes key create my-minio-key -k
 <ul>
 <li>Per configurare il client per accesso admin:</li>
 </ul>
-<div class="codehilite"><pre><span></span>mc config host add myminio https://&lt;indirizzo pubblico Minio&gt;:9000 minioadmin minioadmin
+<div class="codehilite"><pre><span></span>mc config host add --insecure myminio https://&lt;indirizzo pubblico Minio&gt;:9000 minioadmin minioadmin
 </pre></div>
                 
                   

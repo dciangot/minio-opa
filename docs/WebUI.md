@@ -1,12 +1,14 @@
 # Usare WebUI
 
-Per questo quick-start usiamo un deployment gia' pronto installato come descritto [qui]("Encryption.md")
+Per questo quick-start usiamo un deployment gia' pronto installato come descritto [qui]("Encryption.md"). Raggiungibile a `https://131.154.97.121:9001/`
 
 ## Requirement
 
 - Registrare un account in [IAM-demo](https://iam-demo.cloud.cnaf.infn.it/)
 
 ## Login with IAM-demo
+
+- With your browser visit `https://131.154.97.121:9001/`
 
 - Click on `Login with OpenID`
 

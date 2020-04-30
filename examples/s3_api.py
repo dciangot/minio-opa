@@ -58,34 +58,28 @@ except BucketAlreadyExists:
 except ResponseError as err:
     raise err
 
-# TODO: sudo cp MINIO.pem /etc/pki/ca-trust/source/anchors/
-# sudo update-ca-certificates
+buckets = minioClient.list_buckets()
 
-# Write rclone config file in $PWD/<username>.conf
-config = """
-[%s]
-type = s3
-provider = Minio
-env_auth = true
-access_key_id =
-secret_access_key =
-session_token =
-endpoint = https://%s:9001
-""" % (
-    username,
+for bucket in buckets:
+    print(bucket.name, bucket.creation_date)
 
-    '131.154.97.121'
-)
+#uniq file name just for lazy testing
+filename = "%s.txt" % uuid.uuid1()
 
-with open("%s.conf" % username, "w") as conf_file:
-    conf_file.write(config)
+#put a object in a sub-directory of the bucket
+try:
+    with open('localfile.txt', 'rb') as file_data:
+        file_stat = os.stat('localfile.txt')
+        minioClient.put_object( username, 'my_object/test_objec_%s' % filename, file_data, file_stat.st_size)
+except ResponseError as err:
+    print(err)
 
-# Set env vars with credentials
-os.environ['AWS_ACCESS_KEY'] = credenstials['AccessKeyId']
-os.environ['AWS_SECRET_KEY'] = credenstials['SecretAccessKey']
-os.environ['AWS_SESSION_TOKEN'] = credenstials['SessionToken']
+# streaming data to a directory within the bucket
+data = "I want to stream some test to minio"
+data_bytes = data.encode('utf-8')
+data_stream = io.BytesIO(data_bytes)
 
-print("export AWS_ACCESS_KEY=%s" % credenstials['AccessKeyId'])
-print("export AWS_SECRET_KEY=%s" % credenstials['SecretAccessKey'])
-print("export AWS_SESSION_TOKEN=%s" % credenstials['SessionToken'])
-
+try:
+    minioClient.put_object(username, "my_stream/test_stream_%s" % filename, data_stream , len(data_bytes))
+except Exception as ex:
+    raise ex

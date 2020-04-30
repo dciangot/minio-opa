@@ -58,9 +58,6 @@ except BucketAlreadyExists:
 except ResponseError as err:
     raise err
 
-# TODO: sudo cp MINIO.pem /etc/pki/ca-trust/source/anchors/
-# sudo update-ca-certificates
-
 # Write rclone config file in $PWD/<username>.conf
 config = """
 [%s]
@@ -103,6 +100,11 @@ print(myCmd)
 myCmd = os.popen('ls -ltrh /tmp/%s/*/' % (username)).read()
 print(myCmd)
 
+filename = "%s.txt" % uuid.uuid1()
+with open( "/tmp/%s/%s/%s" % (username,username,filename) , "w") as text_file:
+    text_file.write("the file name is %s \n\n" % filename)
+    text_file.write("and the file has been created by %s \n\n" % username)
+
 # Unmount before exit
-myCmd = os.popen('sleep 2 && fusermount -u /tmp/%s' % username).read()
-print(myCmd)
+#myCmd = os.popen('sleep 2 && fusermount -u /tmp/%s' % username).read()
+#print(myCmd)

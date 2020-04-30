@@ -1,0 +1,891 @@
+
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.6.0">
+    
+    
+      
+        <title>OPA and IAM - MINIO with OPA and IAM</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/application.1b62728e.css">
+      
+        <link rel="stylesheet" href="../assets/stylesheets/application-palette.a8b3c06d.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="">
+      
+    
+    
+      <script src="../assets/javascripts/modernizr.268332fc.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../assets/fonts/material-icons.css">
+    
+    
+    
+      
+    
+    
+  </head>
+  
+    
+    
+    <body dir="ltr" data-md-color-primary="deep-blue" data-md-color-accent="light-blue">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="__github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#guida-per-setup-iam-minio-opa" tabindex="1" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href=".." title="MINIO with OPA and IAM" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon">cloud_circle</i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              MINIO with OPA and IAM
+            </span>
+            <span class="md-header-nav__topic">
+              
+                OPA and IAM
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+<a href="https://github.com/dciangot/minio-opa/" title="Go to repository" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    dciangot/minio-opa
+  </div>
+</a>
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main" role="main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href=".." title="MINIO with OPA and IAM" class="md-nav__button md-logo">
+      
+        <i class="md-icon">cloud_circle</i>
+      
+    </a>
+    MINIO with OPA and IAM
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+<a href="https://github.com/dciangot/minio-opa/" title="Go to repository" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    dciangot/minio-opa
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href=".." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" checked>
+    
+    <label class="md-nav__link" for="nav-2">
+      Admin guide
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        Admin guide
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        OPA and IAM
+      </label>
+    
+    <a href="./" title="OPA and IAM" class="md-nav__link md-nav__link--active">
+      OPA and IAM
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#riferimenti" class="md-nav__link">
+    Riferimenti
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisiti" class="md-nav__link">
+    Prerequisiti
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installazione" class="md-nav__link">
+    Installazione
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#test-delle-default-opa-policies-in-questo-setup" class="md-nav__link">
+    Test delle default OPA policies in questo setup
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#esempio-di-creazione-policy-opa-usando-token-claims-iam-in-minio" class="md-nav__link">
+    Esempio di creazione policy OPA usando token claims IAM in Minio
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#debugging-opa" class="md-nav__link">
+    Debugging OPA
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#debugging-minio" class="md-nav__link">
+    Debugging Minio
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Encryption/" title="Server side encryption" class="md-nav__link">
+      Server side encryption
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      User guide
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        User guide
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Oidc/" title="Setup OIDC-agent" class="md-nav__link">
+      Setup OIDC-agent
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../WebUI/" title="WebUI" class="md-nav__link">
+      WebUI
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-3" type="checkbox" id="nav-3-3">
+    
+    <label class="md-nav__link" for="nav-3-3">
+      Python examples
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-3-3">
+        Python examples
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../RClone/" title="Posix con RClone" class="md-nav__link">
+      Posix con RClone
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../s3/" title="S3 APIs" class="md-nav__link">
+      S3 APIs
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#riferimenti" class="md-nav__link">
+    Riferimenti
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisiti" class="md-nav__link">
+    Prerequisiti
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installazione" class="md-nav__link">
+    Installazione
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#test-delle-default-opa-policies-in-questo-setup" class="md-nav__link">
+    Test delle default OPA policies in questo setup
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#esempio-di-creazione-policy-opa-usando-token-claims-iam-in-minio" class="md-nav__link">
+    Esempio di creazione policy OPA usando token claims IAM in Minio
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#debugging-opa" class="md-nav__link">
+    Debugging OPA
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#debugging-minio" class="md-nav__link">
+    Debugging Minio
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/dciangot/minio-opa/edit/master/docs/Opa.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                
+                
+                <h1 id="guida-per-setup-iam-minio-opa">Guida per setup IAM-MINIO-OPA</h1>
+<h2 id="riferimenti">Riferimenti</h2>
+<ul>
+<li><a href="https://www.openpolicyagent.org/docs/latest/">https://www.openpolicyagent.org/docs/latest/</a></li>
+<li><a href="https://docs.min.io/docs/minio-sts-quickstart-guide">https://docs.min.io/docs/minio-sts-quickstart-guide</a></li>
+<li><a href="https://github.com/minio/minio/blob/master/docs/sts/opa.md">https://github.com/minio/minio/blob/master/docs/sts/opa.md</a></li>
+</ul>
+<h2 id="prerequisiti">Prerequisiti</h2>
+<ul>
+<li>Install make, docker e docker-compose</li>
+<li>porta 9000 aperta</li>
+<li>Client IAM per code-flow con redirect URIs:<ul>
+<li>'http://<minio host>:9000/minio/'</li>
+<li>'http://<minio host>:9000/minio/login/openid</li>
+</ul>
+</li>
+<li>Scaricare il repository: </li>
+</ul>
+<div class="codehilite"><pre><span></span>git clone https://github.com/dciangot/minio-opa.git <span class="o">&amp;&amp;</span> <span class="nb">cd</span> minio-opa
+</pre></div>
+
+
+<h2 id="installazione">Installazione</h2>
+<p><code>docker-compose up</code></p>
+<p>o </p>
+<p><code>make install</code></p>
+<p>Per stop e start usare:</p>
+<p><code>make stop/start</code></p>
+<h2 id="test-delle-default-opa-policies-in-questo-setup">Test delle default OPA policies in questo setup</h2>
+<ul>
+<li>andare alla porta http://<minio host>9000 del sever e seguire la procedura di autenticazione</li>
+<li>una volta entrati si puo creare il solo bucket con il proprio cognome o nome.cognome</li>
+<li>all'interno di quel bucket e' possibile scrivere, leggere e creare cartelle</li>
+<li>dentro il bucket <code>scratch</code> tutti possono leggere e scaricare tutto, ma possono solo scrivere in <code>scratch/&lt;cognome&gt;</code> o, se mancante, crearla.</li>
+</ul>
+<p>Di seguito la spiegazione di come queste policy sono configurate in opa</p>
+<h2 id="esempio-di-creazione-policy-opa-usando-token-claims-iam-in-minio">Esempio di creazione policy OPA usando token claims IAM in Minio</h2>
+<p>Un tipico input che arriva al server OPA da Minio dopo l'autenticazione con token IAM e' in questa forma:</p>
+<div class="codehilite"><pre><span></span>      <span class="p">{</span>
+        <span class="nt">&quot;input&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;account&quot;</span><span class="p">:</span> <span class="s2">&quot;Z........................BI&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;s3:CreateBucket&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;bucket&quot;</span><span class="p">:</span> <span class="s2">&quot;ciangottini&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;conditions&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;Accept-Encoding&quot;</span><span class="p">:</span> <span class="p">[</span>
+              <span class="s2">&quot;identity&quot;</span>
+            <span class="p">],</span>
+            <span class="nt">&quot;Authorization&quot;</span><span class="p">:</span> <span class="p">[</span>
+              <span class="s2">&quot;AWS4-HMAC-SHA256 Credential=ZX4QOC80CNLHIBCLG7BI/20200423/us-east-1/s3/aws4_request, SignedHeaders=host;user-agent;x-amz-content-sha256;x-amz-date;x-amz-security-token, Signature=2926934a3a1380ff8c80c20faeb187a2ddcc42b47a9075fb111987c890811618&quot;</span>
+            <span class="p">],</span>
+            <span class="nt">&quot;Content-Length&quot;</span><span class="p">:</span> <span class="p">[</span>
+              <span class="s2">&quot;0&quot;</span>
+            <span class="p">],</span>
+            <span class="nt">&quot;CurrentTime&quot;</span><span class="p">:</span> <span class="p">[</span>
+              <span class="s2">&quot;2020-04-23T09:09:31Z&quot;</span>
+            <span class="p">],</span>
+            <span class="nt">&quot;EpochTime&quot;</span><span class="p">:</span> <span class="p">[</span>
+              <span class="s2">&quot;1587632971&quot;</span>
+            <span class="p">],</span>
+            <span class="nt">&quot;Referer&quot;</span><span class="p">:</span> <span class="p">[</span>
+              <span class="s2">&quot;&quot;</span>
+            <span class="p">],</span>
+            <span class="nt">&quot;SecureTransport&quot;</span><span class="p">:</span> <span class="p">[</span>
+              <span class="s2">&quot;false&quot;</span>
+            <span class="p">],</span>
+            <span class="nt">&quot;SourceIp&quot;</span><span class="p">:</span> <span class="p">[</span>
+              <span class="s2">&quot;188.XX3.77.XX&quot;</span>
+            <span class="p">],</span>
+            <span class="nt">&quot;User-Agent&quot;</span><span class="p">:</span> <span class="p">[</span>
+              <span class="s2">&quot;MinIO (Linux; x86_64) minio-py/5.0.10&quot;</span>
+            <span class="p">],</span>
+            <span class="nt">&quot;UserAgent&quot;</span><span class="p">:</span> <span class="p">[</span>
+              <span class="s2">&quot;MinIO (Linux; x86_64) minio-py/5.0.10&quot;</span>
+            <span class="p">],</span>
+            <span class="nt">&quot;X-Amz-Content-Sha256&quot;</span><span class="p">:</span> <span class="p">[</span>
+              <span class="s2">&quot;e3b.................852b855&quot;</span>
+            <span class="p">],</span>
+            <span class="nt">&quot;X-Amz-Date&quot;</span><span class="p">:</span> <span class="p">[</span>
+              <span class="s2">&quot;20200423T090933Z&quot;</span>
+            <span class="p">],</span>
+            <span class="nt">&quot;X-Amz-Security-Token&quot;</span><span class="p">:</span> <span class="p">[</span>
+              <span class="s2">&quot;eyJhbGciO............vqgpJO9vWgQ3oc3tDOnP4A&quot;</span>
+            <span class="p">],</span>
+            <span class="nt">&quot;accessKey&quot;</span><span class="p">:</span> <span class="p">[</span>
+              <span class="s2">&quot;ZX4QOC80CNLHIBCLG7BI&quot;</span>
+            <span class="p">],</span>
+            <span class="nt">&quot;aud&quot;</span><span class="p">:</span> <span class="p">[</span>
+              <span class="s2">&quot;b8.........................d0d9&quot;</span>
+            <span class="p">],</span>
+            <span class="nt">&quot;email&quot;</span><span class="p">:</span> <span class="p">[</span>
+              <span class="s2">&quot;ciangottini@pg.infn.it&quot;</span>
+            <span class="p">],</span>
+            <span class="nt">&quot;iss&quot;</span><span class="p">:</span> <span class="p">[</span>
+              <span class="s2">&quot;https://iam.cloud.infn.it/&quot;</span>
+            <span class="p">],</span>
+            <span class="nt">&quot;jti&quot;</span><span class="p">:</span> <span class="p">[</span>
+              <span class="s2">&quot;ffe5...................ce4e&quot;</span>
+            <span class="p">],</span>
+            <span class="nt">&quot;kid&quot;</span><span class="p">:</span> <span class="p">[</span>
+              <span class="s2">&quot;rsa1&quot;</span>
+            <span class="p">],</span>
+            <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="p">[</span>
+              <span class="s2">&quot;Diego Ciangottini&quot;</span>
+            <span class="p">],</span>
+            <span class="nt">&quot;organisation_name&quot;</span><span class="p">:</span> <span class="p">[</span>
+              <span class="s2">&quot;infn-cc&quot;</span>
+            <span class="p">],</span>
+            <span class="nt">&quot;preferred_username&quot;</span><span class="p">:</span> <span class="p">[</span>
+              <span class="s2">&quot;ciangottini@infn.it&quot;</span>
+            <span class="p">],</span>
+            <span class="nt">&quot;principaltype&quot;</span><span class="p">:</span> <span class="p">[</span>
+              <span class="s2">&quot;User&quot;</span>
+            <span class="p">],</span>
+            <span class="nt">&quot;sub&quot;</span><span class="p">:</span> <span class="p">[</span>
+              <span class="s2">&quot;2f8......................286&quot;</span>
+            <span class="p">],</span>
+            <span class="nt">&quot;userid&quot;</span><span class="p">:</span> <span class="p">[</span>
+              <span class="s2">&quot;ZX................BI&quot;</span>
+            <span class="p">],</span>
+            <span class="nt">&quot;username&quot;</span><span class="p">:</span> <span class="p">[</span>
+              <span class="s2">&quot;ZX4..................BI&quot;</span>
+            <span class="p">]</span>
+          <span class="p">},</span>
+          <span class="nt">&quot;owner&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+             <span class="err">{</span><span class="nt">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;s3:GetObject&quot;</span><span class="p">},</span>
+          <span class="nt">&quot;object&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;claims&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;accessKey&quot;</span><span class="p">:</span> <span class="s2">&quot;................LG7BI&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;aud&quot;</span><span class="p">:</span> <span class="s2">&quot;b830.........................07d0d9&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;ciangottini@pg.infn.it&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;exp&quot;</span><span class="p">:</span> <span class="mi">1587633250</span><span class="p">,</span>
+            <span class="nt">&quot;groups&quot;</span><span class="p">:</span> <span class="p">[</span>
+              <span class="s2">&quot;developers&quot;</span>
+            <span class="p">],</span>
+            <span class="nt">&quot;iat&quot;</span><span class="p">:</span> <span class="mi">1587632650</span><span class="p">,</span>
+            <span class="nt">&quot;iss&quot;</span><span class="p">:</span> <span class="s2">&quot;https://iam.cloud.infn.it/&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;jti&quot;</span><span class="p">:</span> <span class="s2">&quot;ffe5.......7ce4e&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;kid&quot;</span><span class="p">:</span> <span class="s2">&quot;rsa1&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Diego Ciangottini&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;organisation_name&quot;</span><span class="p">:</span> <span class="s2">&quot;infn-cc&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;preferred_username&quot;</span><span class="p">:</span> <span class="s2">&quot;ciangottini@infn.it&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;sub&quot;</span><span class="p">:</span> <span class="s2">&quot;2f8d..............61d89286&quot;</span>
+          <span class="p">}</span>
+</pre></div>
+
+
+<p>Tutti questi parametri possono essere utilizzati da OPA per decidere se autorizzare o no la richiesta. Si vede inoltre che MINIO ha processato l'<code>id_token</code> dell'utente ricavandone i campi <code>claims</code>.</p>
+<p>Nel nostro esempio abbiamo due principali categorie di permessi: <code>user</code> e <code>scratch</code>.
+Nel primo vogliamo autorizzare praticamente qualsiasi operazione s3, mentre nell'altro, vogliamo che solo il list e il get dei file sia permesso.
+Questo e' rappresentato nel file di default <a href="https://github.com/dciangot/minio-opa/tree/master/policies">policy</a> che abbiamo creato con:</p>
+<div class="codehilite"><pre><span></span><span class="n">package</span> <span class="n">httpapi</span><span class="o">.</span><span class="n">authz</span>
+<span class="kn">import</span> <span class="nn">input</span>
+
+<span class="n">default</span> <span class="n">allow</span> <span class="o">=</span> <span class="n">false</span>
+
+<span class="c1"># role-permissions assignments</span>
+<span class="n">rl_permissions</span> <span class="p">:</span><span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;user&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;s3:CreateBucket&quot;</span><span class="p">},</span>
+             <span class="p">{</span><span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;s3:DeleteBucket&quot;</span><span class="p">},</span>
+             <span class="p">{</span><span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;s3:DeleteObject&quot;</span><span class="p">},</span>
+             <span class="p">{</span><span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;s3:GetObject&quot;</span><span class="p">},</span>
+             <span class="p">{</span><span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;s3:ListAllMyBuckets&quot;</span><span class="p">},</span>
+             <span class="p">{</span><span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;s3:ListBucket&quot;</span><span class="p">},</span>
+             <span class="p">{</span><span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;s3:PutObject&quot;</span><span class="p">}],</span>
+    <span class="s2">&quot;scratch&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;s3:ListAllMyBuckets&quot;</span><span class="p">},</span>
+                <span class="p">{</span><span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;s3:GetObject&quot;</span><span class="p">},</span>
+                <span class="p">{</span><span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;s3:ListBucket&quot;</span> <span class="p">}]</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>Ora possiamo decidere in quali casi applicare questi permessi sulla base degli input visti prima. Iniziamo dal bucket utente, vogliamo autorizzare a creare ed operare su un determinato bucket solo le richieste che arrivano con un <code>claim</code> di tipo email nelle forma <code>&lt;bucket name&gt;@...</code>. Cosi che nel caso IAM INFN cloud l'utente possa scrivere nel bucket a suo <code>nome.cognome</code> o <code>cognome</code>.</p>
+<div class="codehilite"><pre><span></span><span class="c1"># Allow users to manage their own data.</span>
+<span class="n">allow</span> <span class="p">{</span>
+  <span class="c1"># Extract username from email</span>
+  <span class="n">username</span> <span class="p">:</span><span class="o">=</span> <span class="n">split</span><span class="p">(</span><span class="n">lower</span><span class="p">(</span><span class="nb">input</span><span class="o">.</span><span class="n">claims</span><span class="o">.</span><span class="n">preferred_username</span><span class="p">),</span><span class="s2">&quot;@&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+  <span class="c1"># verify that bucketname == username</span>
+  <span class="nb">input</span><span class="o">.</span><span class="n">bucket</span> <span class="o">==</span> <span class="n">username</span>
+
+  <span class="c1"># apply only when token auth happened </span>
+  <span class="c1"># This is needed to keep admin user and password with full powers</span>
+  <span class="nb">input</span><span class="o">.</span><span class="n">claims</span><span class="o">.</span><span class="n">organisation_name</span> <span class="o">==</span> <span class="s2">&quot;infn-cc&quot;</span>
+
+  <span class="c1"># Apply user permissions to this request</span>
+  <span class="n">permissions</span> <span class="p">:</span><span class="o">=</span> <span class="n">rl_permissions</span><span class="p">[</span><span class="s2">&quot;user&quot;</span><span class="p">]</span>
+  <span class="n">p</span> <span class="p">:</span><span class="o">=</span> <span class="n">permissions</span><span class="p">[</span><span class="n">_</span><span class="p">]</span>
+  <span class="n">p</span> <span class="o">==</span> <span class="p">{</span><span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="nb">input</span><span class="o">.</span><span class="n">action</span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>Per quanto riguarda il bucket <code>scratch</code> invece, vogliamo che chiunque abbia i permessi <code>scratch</code> definiti sopra, quindi:</p>
+<div class="codehilite"><pre><span></span><span class="c1"># Allow to retrieve and see data from other users in scratch area</span>
+<span class="n">allow</span> <span class="p">{</span>
+  <span class="nb">input</span><span class="o">.</span><span class="n">bucket</span> <span class="o">==</span> <span class="s2">&quot;scratch&quot;</span>
+  <span class="n">permissions</span> <span class="p">:</span><span class="o">=</span> <span class="n">rl_permissions</span><span class="p">[</span><span class="s2">&quot;scratch&quot;</span><span class="p">]</span>
+  <span class="n">p</span> <span class="p">:</span><span class="o">=</span> <span class="n">permissions</span><span class="p">[</span><span class="n">_</span><span class="p">]</span>
+  <span class="c1"># check if the permission granted to r matches the user request</span>
+  <span class="n">p</span> <span class="o">==</span> <span class="p">{</span><span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="nb">input</span><span class="o">.</span><span class="n">action</span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>Mentre per limitare un subrange di chiamate a path del tipo <code>scratch/&lt;cognome&gt;</code> abbiamo bisogno di prendere altri input dalla richiesta e verificarli come segue:</p>
+<div class="codehilite"><pre><span></span><span class="n">allow</span> <span class="p">{</span>
+  <span class="n">username</span> <span class="p">:</span><span class="o">=</span> <span class="n">split</span><span class="p">(</span><span class="n">lower</span><span class="p">(</span><span class="nb">input</span><span class="o">.</span><span class="n">claims</span><span class="o">.</span><span class="n">preferred_username</span><span class="p">),</span><span class="s2">&quot;@&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+  <span class="n">ref</span> <span class="p">:</span><span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">conditions</span><span class="o">.</span><span class="n">Referer</span><span class="p">[</span><span class="n">_</span><span class="p">]</span>
+
+  <span class="n">url</span> <span class="p">:</span><span class="o">=</span> <span class="n">concat</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;^http://.*:9000/minio/scratch&quot;</span><span class="p">,</span><span class="n">username</span><span class="p">,</span><span class="s2">&quot;.*$&quot;</span><span class="p">]</span> <span class="p">)</span>
+
+  <span class="n">re_match</span><span class="p">(</span> <span class="n">url</span> <span class="p">,</span> <span class="n">ref</span><span class="p">)</span>
+
+  <span class="nb">input</span><span class="o">.</span><span class="n">claims</span><span class="o">.</span><span class="n">organisation_name</span> <span class="o">==</span> <span class="s2">&quot;infn-cc&quot;</span>
+  <span class="n">permissions</span> <span class="p">:</span><span class="o">=</span> <span class="n">rl_permissions</span><span class="p">[</span><span class="s2">&quot;user&quot;</span><span class="p">]</span>
+  <span class="n">p</span> <span class="p">:</span><span class="o">=</span> <span class="n">permissions</span><span class="p">[</span><span class="n">_</span><span class="p">]</span>
+  <span class="n">p</span> <span class="o">==</span> <span class="p">{</span><span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="nb">input</span><span class="o">.</span><span class="n">action</span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>Infine vogliamo mantenere tutti i poter per l'autenticazione user e password dell'admin:</p>
+<div class="codehilite"><pre><span></span><span class="n">allow</span> <span class="p">{</span>
+  <span class="nb">input</span><span class="o">.</span><span class="n">account</span> <span class="o">==</span> <span class="s2">&quot;minioadmin&quot;</span>
+  <span class="n">permissions</span> <span class="p">:</span><span class="o">=</span> <span class="n">rl_permissions</span><span class="p">[</span><span class="s2">&quot;user&quot;</span><span class="p">]</span>
+  <span class="n">p</span> <span class="p">:</span><span class="o">=</span> <span class="n">permissions</span><span class="p">[</span><span class="n">_</span><span class="p">]</span>
+  <span class="n">p</span> <span class="o">==</span> <span class="p">{</span><span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="nb">input</span><span class="o">.</span><span class="n">action</span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>A questo punto se non fossero gia incluse di default in questo deployment, potremmo inserire nuove policy in opa con un semplice curl:</p>
+<div class="codehilite"><pre><span></span>curl -X PUT --data-binary @policy.rego   http://localhost:8181/v1/policies/users
+</pre></div>
+
+
+<h2 id="debugging-opa">Debugging OPA</h2>
+<p>I log sono visibili (per ora) in debug mode qui:</p>
+<div class="codehilite"><pre><span></span>docker logs --tail <span class="m">2000</span> minio-opa_opa_1
+</pre></div>
+
+
+<h2 id="debugging-minio">Debugging Minio</h2>
+<ul>
+<li>
+<p><a href="https://github.com/minio/mc/blob/master/docs/minio-admin-complete-guide.md">Installare client mc</a></p>
+</li>
+<li>
+<p>Configurarlo per accesso admin</p>
+</li>
+</ul>
+<div class="codehilite"><pre><span></span>mc config host add myminio http://localhost:9000 minioadmin minioadmin
+</pre></div>
+
+
+<ul>
+<li>stampare il trace http con</li>
+</ul>
+<div class="codehilite"><pre><span></span>mc admin trace myminio
+</pre></div>
+                
+                  
+                
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href=".." title="Home" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Home
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../Encryption/" title="Server side encryption" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Server side encryption
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
+  <div class="md-footer-social">
+    <link rel="stylesheet" href="../assets/fonts/font-awesome.css">
+    
+      <a href="https://github.com/dciangot/minio-opa" class="md-footer-social__link fa fa-github"></a>
+    
+      <a href="https://twitter.com/imdciangot" class="md-footer-social__link fa fa-twitter"></a>
+    
+  </div>
+
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/application.808e90bb.js"></script>
+      
+      <script>app.initialize({version:"1.0.4",url:{base:".."}})</script>
+      
+    
+  </body>
+</html>

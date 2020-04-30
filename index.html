@@ -297,75 +297,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#usare-server-side-encryption" class="md-nav__link">
-    Usare Server Side Encryption
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#riferimenti_1" class="md-nav__link">
-    Riferimenti
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#requirements" class="md-nav__link">
-    Requirements
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#generate-self-signed-certificates" class="md-nav__link">
-    Generate self-signed certificates
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#creare-utenti-kes" class="md-nav__link">
-    Creare utenti KES
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#file-di-configurazione-kes" class="md-nav__link">
-    File di configurazione KES
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#docker-compose-minio-opa-kes" class="md-nav__link">
-    Docker Compose: minio, opa, kes
-  </a>
-  
-    <nav class="md-nav">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#restart-del-docker-compose-precedente" class="md-nav__link">
-    Restart del docker compose precedente
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#generare-una-chiave-di-cifratura-per-minio" class="md-nav__link">
-    Generare una chiave di cifratura per Minio
-  </a>
-  
-</li>
-      
       
       
       
@@ -374,6 +305,90 @@
   
 </nav>
     
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="Encryption.md" title="Server side encryption" class="md-nav__link">
+      Server side encryption
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="WebUI/" title="WebUI" class="md-nav__link">
+      WebUI
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="Oidc/" title="Setup OIDC-agent" class="md-nav__link">
+      Setup OIDC-agent
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
+    
+    <label class="md-nav__link" for="nav-5">
+      Python examples
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        Python examples
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="RClone/" title="Posix con RClone" class="md-nav__link">
+      Posix con RClone
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="s3/" title="S3 APIs" class="md-nav__link">
+      S3 APIs
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
   </li>
 
     
@@ -442,75 +457,6 @@
         <li class="md-nav__item">
   <a href="#debugging-minio" class="md-nav__link">
     Debugging Minio
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#usare-server-side-encryption" class="md-nav__link">
-    Usare Server Side Encryption
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#riferimenti_1" class="md-nav__link">
-    Riferimenti
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#requirements" class="md-nav__link">
-    Requirements
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#generate-self-signed-certificates" class="md-nav__link">
-    Generate self-signed certificates
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#creare-utenti-kes" class="md-nav__link">
-    Creare utenti KES
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#file-di-configurazione-kes" class="md-nav__link">
-    File di configurazione KES
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#docker-compose-minio-opa-kes" class="md-nav__link">
-    Docker Compose: minio, opa, kes
-  </a>
-  
-    <nav class="md-nav">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#restart-del-docker-compose-precedente" class="md-nav__link">
-    Restart del docker compose precedente
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#generare-una-chiave-di-cifratura-per-minio" class="md-nav__link">
-    Generare una chiave di cifratura per Minio
   </a>
   
 </li>
@@ -795,187 +741,6 @@ Questo e' rappresentato nel file di default <a href="https://github.com/dciangot
 </ul>
 <div class="codehilite"><pre><span></span>mc admin trace myminio
 </pre></div>
-
-
-<h2 id="usare-server-side-encryption">Usare Server Side Encryption</h2>
-<p>"MinIO uses a key-management-system (KMS) to support SSE-S3. If a client requests SSE-S3, or auto-encryption
-is enabled, the MinIO server encrypts each object with an unique object key which is protected by a master key
-managed by the KMS.
-MinIO supports commonly-used KMS implementations, like AWS-KMS or
-Hashicorp Vault via our KES project.
-KES makes it possible to scale your KMS horizontally with your storage infrastructure (MinIO clusters).
-Therefore, it wraps around the KMS implementation like this:"</p>
-<div class="codehilite"><pre><span></span>       +-------+                 +-------+
-       | MinIO |                 | MinIO |
-       +---+---+                 +---+---+
-           |                         |
-      +----+-------------------------+----+---- KMS
-      |    |                         |    |
-      | +--+--+                   +--+--+ |
-      | | KES +--+             +--+ KES | |
-      | +-----+  |  +-------+  |  +-----+ |
-      |          +--+ Vault +--+          |
-      | +-----+  |  +-------+  |  +-----+ |
-      | | KES +--+             +--+ KES | |
-      | +--+--+                   +--+--+ |
-      |    |                         |    |
-      +----+-------------------------+----+---- KMS
-           |                         |
-       +---+---+                 +---+---+
-       | MinIO |                 | MinIO |
-       +-------+                 +-------+
-</pre></div>
-
-
-<p>Per semplicita' di seguito proveremo il setup con un solo server KES e un server minio. Al posto di Vault la chiave verra' salvata su FS.</p>
-<h2 id="riferimenti_1">Riferimenti</h2>
-<ul>
-<li><a href="https://docs.min.io/docs/how-to-secure-access-to-minio-server-with-tls">https://docs.min.io/docs/how-to-secure-access-to-minio-server-with-tls</a></li>
-<li><a href="https://docs.minio.io/docs/how-to-use-minio-s-server-side-encryption-with-aws-cli">https://docs.minio.io/docs/how-to-use-minio-s-server-side-encryption-with-aws-cli</a></li>
-<li><a href="[https://github.com/minio/kes/wiki/MinIO-Object-Storage#kes-server-setup">https://github.com/minio/kes/wiki/MinIO-Object-Storage#kes-server-setup</a></li>
-<li><a href="https://github.com/minio/kes/wiki/Server-API">https://github.com/minio/kes/wiki/Server-API</a></li>
-</ul>
-<h2 id="requirements">Requirements</h2>
-<div class="codehilite"><pre><span></span><span class="c1"># Install utility for self signed certificate generation</span>
-sudo wget https://github.com/DODAS-TS/dodas-x509/releases/download/v0.0.2/dodas-x509 -O /usr/local/bin/dodas-x509
-
-<span class="c1"># Install Minio KES</span>
-wget https://github.com/minio/kes/releases/latest/download/linux-amd64.zip
-unzip linux-amd64.zip
-sudo mv kes /usr/local/bin/
-
-<span class="c1"># Create folder for certificates and keys</span>
-mkdir -p certs/CAs
-mkdir keys
-
-<span class="c1"># Create folder for Minoi encryption test</span>
-mkdir data_encrypt
-</pre></div>
-
-
-<h2 id="generate-self-signed-certificates">Generate self-signed certificates</h2>
-<div class="codehilite"><pre><span></span><span class="c1"># Generate KES server certificate</span>
-dodas-x509 --hostname <span class="m">127</span>.0.0.1 --ca-path <span class="nv">$PWD</span>/certs/CAs --cert-path <span class="nv">$PWD</span>/certs --cert-name kes --ca-name KES
-
-<span class="c1"># Generate Minio server certificate</span>
-dodas-x509 --hostname &lt;public IP minio&gt; --ca-path <span class="nv">$PWD</span>/certs/CAs --cert-path <span class="nv">$PWD</span>/certs --cert-name minio --ca-name MINIO
-
-<span class="c1"># Use the minio naming convention for certificates</span>
-mv certs/minio.pem certs/public.crt
-mv certs/minio.key certs/private.key
-</pre></div>
-
-
-<h2 id="creare-utenti-kes">Creare utenti KES</h2>
-<p>Definiamo un utente con permessi admin (root) e uno per il server Minio:</p>
-<div class="codehilite"><pre><span></span><span class="c1"># Creation of KES user root</span>
-kes tool identity new --key<span class="o">=</span><span class="s2">&quot;certs/root.key&quot;</span> --cert<span class="o">=</span><span class="s2">&quot;certs/root.cert&quot;</span> root
-
-<span class="c1"># Creation of KES user Minio</span>
-kes tool identity new --key<span class="o">=</span><span class="s2">&quot;certs/minio.key&quot;</span> --cert<span class="o">=</span><span class="s2">&quot;certs/minio.cert&quot;</span> MinIO
-</pre></div>
-
-
-<p>Adesso in cert dovrebbero essere stati create i certificati indicati, che puo' indicarci lo user ID di KES per questi certificati con:</p>
-<div class="codehilite"><pre><span></span>kes tool identity of certs/root.cert
-
-kes tool identity of certs/minio.cert
-</pre></div>
-
-
-<h2 id="file-di-configurazione-kes">File di configurazione KES</h2>
-<p>Il file di configurazione (<code>kes.config</code>) per questo setup consiste nell'indicare i cert per TLS e quello per autorizzare Minio a ritirare e creare chiavi.</p>
-<div class="codehilite"><pre><span></span>address = &quot;0.0.0.0:7373&quot;
-root    = &quot;&lt;value obtained with: `kes tool identity of certs/root.cert`&gt;&quot;
-
-[tls]
-key  = &quot;kes.key&quot;
-cert = &quot;kes.pem&quot;
-
-[policy.prod-app] 
-paths      = [ &quot;/v1/key/create/my-minio-key&quot;, 
-               &quot;/v1/key/generate/my-minio-key&quot; ,
-               &quot;/v1/key/decrypt/my-minio-key&quot; ]
-identities = [ &quot;&lt;value obtained with: `kes tool identity of certs/minio.cert`&gt;&quot; ]
-
-# We use the local filesystem for simplicity.
-# We could use Vault for instance.
-[keystore.fs]
-path    = &quot;./keys&quot; # Choose a directory for the secret keys
-</pre></div>
-
-
-<h2 id="docker-compose-minio-opa-kes">Docker Compose: minio, opa, kes</h2>
-<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">version</span><span class="p p-Indicator">:</span> <span class="s">&#39;3.7&#39;</span>
-<span class="l l-Scalar l-Scalar-Plain">services</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">opa</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">image</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">openpolicyagent/opa:0.18.0</span>
-    <span class="l l-Scalar l-Scalar-Plain">network_mode</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">host</span>
-    <span class="l l-Scalar l-Scalar-Plain">command</span><span class="p p-Indicator">:</span>
-      <span class="p p-Indicator">-</span> <span class="s">&quot;run&quot;</span>
-      <span class="p p-Indicator">-</span> <span class="s">&quot;--server&quot;</span>
-      <span class="p p-Indicator">-</span> <span class="s">&quot;--log-level=debug&quot;</span>
-      <span class="p p-Indicator">-</span> <span class="s">&quot;--log-format=text&quot;</span>
-      <span class="p p-Indicator">-</span> <span class="s">&quot;--addr=0.0.0.0:8181&quot;</span>
-      <span class="p p-Indicator">-</span> <span class="s">&quot;/policies&quot;</span>
-    <span class="l l-Scalar l-Scalar-Plain">volumes</span><span class="p p-Indicator">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">./policies:/policies</span>
-
-  <span class="l l-Scalar l-Scalar-Plain">minio</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">network_mode</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">host</span>
-    <span class="l l-Scalar l-Scalar-Plain">image</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">dciangot/minio</span>
-    <span class="l l-Scalar l-Scalar-Plain">command</span><span class="p p-Indicator">:</span>
-      <span class="p p-Indicator">-</span> <span class="s">&quot;server&quot;</span>
-      <span class="p p-Indicator">-</span> <span class="s">&quot;--address&quot;</span>
-      <span class="p p-Indicator">-</span> <span class="s">&quot;:9000&quot;</span>
-      <span class="p p-Indicator">-</span> <span class="s">&quot;/data&quot;</span>
-    <span class="l l-Scalar l-Scalar-Plain">environment</span><span class="p p-Indicator">:</span>
-      <span class="l l-Scalar l-Scalar-Plain">MINIO_POLICY_OPA_URL</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">http://localhost:8181/v1/data/httpapi/authz/allow</span>
-      <span class="l l-Scalar l-Scalar-Plain">MINIO_IDENTITY_OPENID_CLIENT_ID</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;IAM client ID&gt;</span>
-      <span class="l l-Scalar l-Scalar-Plain">MINIO_IDENTITY_OPENID_CONFIG_URL</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">https://iam-demo.cloud.cnaf.infn.it/.well-known/openid-configuration</span>
-      <span class="l l-Scalar l-Scalar-Plain">MINIO_KMS_KES_ENDPOINT</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">https://127.0.0.1:7373</span>
-      <span class="l l-Scalar l-Scalar-Plain">MINIO_KMS_KES_CERT_FILE</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">/root/.minio/certs/minio.cert</span>
-      <span class="l l-Scalar l-Scalar-Plain">MINIO_KMS_KES_KEY_FILE</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">/root/.minio/certs/minio.key</span>
-      <span class="l l-Scalar l-Scalar-Plain">MINIO_KMS_KES_CA_PATH</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">/root/.minio/certs/kes.pem</span>
-      <span class="l l-Scalar l-Scalar-Plain">MINIO_KMS_KES_KEY_NAME</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my-minio-key</span>
-      <span class="l l-Scalar l-Scalar-Plain">MINIO_KMS_AUTO_ENCRYPTION</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
-    <span class="l l-Scalar l-Scalar-Plain">volumes</span><span class="p p-Indicator">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">./data_encrypt:/data</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">./certs:/root/.minio/certs</span>
-
-  <span class="l l-Scalar l-Scalar-Plain">kes</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">network_mode</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">host</span>
-    <span class="l l-Scalar l-Scalar-Plain">image</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">minio/kes</span>
-    <span class="l l-Scalar l-Scalar-Plain">command</span><span class="p p-Indicator">:</span>
-      <span class="p p-Indicator">-</span> <span class="s">&quot;server&quot;</span>
-      <span class="p p-Indicator">-</span> <span class="s">&quot;--mtls-auth=ignore&quot;</span>
-      <span class="p p-Indicator">-</span> <span class="s">&quot;--config=/root/config/server-config.toml&quot;</span>
-    <span class="l l-Scalar l-Scalar-Plain">volumes</span><span class="p p-Indicator">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">./certs:/root/certs</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">./kes.config:/root/config/server-config.toml</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">./keys:/keys</span>
-</pre></div>
-
-
-<h3 id="restart-del-docker-compose-precedente">Restart del docker compose precedente</h3>
-<div class="codehilite"><pre><span></span>make stop
-
-make start
-</pre></div>
-
-
-<h2 id="generare-una-chiave-di-cifratura-per-minio">Generare una chiave di cifratura per Minio</h2>
-<p>Generiamo una chiave con l'utente minio:</p>
-<div class="codehilite"><pre><span></span><span class="nb">cd</span> certs
-<span class="nb">export</span> <span class="nv">KES_CLIENT_TLS_CERT_FILE</span><span class="o">=</span>minio.cert
-<span class="nb">export</span> <span class="nv">KES_CLIENT_TLS_KEY_FILE</span><span class="o">=</span>minio.key
-kes key create my-minio-key -k
-<span class="nb">cd</span> -
-</pre></div>
-
-
-<p>Ora in <code>.keys</code> dovrebbe essere apparsa la chiave.</p>
-<p>Dovrebbe essere tutto pronto per poter andare a https://<indirizzo pubblico Minio>:9000 creare un bucket con il mio IAM username o con <code>minioadmin:minioadmin</code>. Tutto quello che verra' caricato nel bucket apparira' in <code>./data_encrypt</code>.</p>
                 
                   
                 
@@ -993,6 +758,27 @@ kes key create my-minio-key -k
       
         
 <footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+        
+          <a href="WebUI/" title="WebUI" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                WebUI
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">

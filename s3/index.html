@@ -368,9 +368,38 @@
       
     
     
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        S3 APIs
+      </label>
+    
     <a href="./" title="S3 APIs" class="md-nav__link md-nav__link--active">
       S3 APIs
     </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#code-walk-through" class="md-nav__link">
+    Code walk-through
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
     
   </li>
 
@@ -402,6 +431,22 @@
     
   
   
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#code-walk-through" class="md-nav__link">
+    Code walk-through
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -428,6 +473,127 @@
 </ul>
 </li>
 </ul>
+<h2 id="code-walk-through">Code walk-through</h2>
+<p>First of all you have to get your IAM token from oidc-agent and put it into <code>TOKEN</code> env variable.</p>
+<div class="codehilite"><pre><span></span><span class="nb">export</span> <span class="nv">TOKEN</span><span class="o">=</span><span class="sb">`</span>oidc-token demo<span class="sb">`</span>
+</pre></div>
+
+
+<p>then in the python code you can recall it with:</p>
+<div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="n">token</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;TOKEN&quot;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Now you need to use this token to retrieve your Minio S3 temporary credentials. 
+One way to do this is as follows:</p>
+<div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">xmltodict</span>
+
+
+<span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;https://131.154.97.121:9001&quot;</span><span class="p">,</span>
+                  <span class="n">data</span><span class="o">=</span><span class="p">{</span>
+                      <span class="s1">&#39;Action&#39;</span><span class="p">:</span>
+                      <span class="s2">&quot;AssumeRoleWithWebIdentity&quot;</span><span class="p">,</span>
+                      <span class="s1">&#39;Version&#39;</span><span class="p">:</span> <span class="s2">&quot;2011-06-15&quot;</span><span class="p">,</span>
+                      <span class="s1">&#39;WebIdentityToken&#39;</span><span class="p">:</span> <span class="n">token</span><span class="p">,</span>
+                      <span class="s1">&#39;DurationSeconds&#39;</span><span class="p">:</span> <span class="mi">900</span>
+                  <span class="p">},</span>
+                  <span class="n">verify</span><span class="o">=</span><span class="s1">&#39;MINIO.pem&#39;</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">reason</span><span class="p">)</span>
+
+<span class="n">tree</span> <span class="o">=</span> <span class="n">xmltodict</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+
+<span class="n">credenstials</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">tree</span><span class="p">[</span><span class="s1">&#39;AssumeRoleWithWebIdentityResponse&#39;</span><span class="p">]</span>
+                    <span class="p">[</span><span class="s1">&#39;AssumeRoleWithWebIdentityResult&#39;</span><span class="p">][</span><span class="s1">&#39;Credentials&#39;</span><span class="p">])</span>
+</pre></div>
+
+
+<p>You have now a set of valid credentials composed by an accessID, a secret, and a session token:</p>
+<div class="codehilite"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s2">&quot;accessID:&quot;</span><span class="p">,</span> <span class="n">credenstials</span><span class="p">[</span><span class="s1">&#39;AccessKeyId&#39;</span><span class="p">])</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;secret:&quot;</span><span class="p">,</span> <span class="n">credenstials</span><span class="p">[</span><span class="s1">&#39;SecretAccessKey&#39;</span><span class="p">])</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;session token:&quot;</span><span class="p">,</span> <span class="n">credenstials</span><span class="p">[</span><span class="s1">&#39;SessionToken&#39;</span><span class="p">])</span>
+</pre></div>
+
+
+<p>Now before mounting your bucket with RClone, you might want to check if the bucket with your username exists, and in case not, to create one. You can do it easily with the MINIO python APIs:</p>
+<div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">jwt</span>
+<span class="kn">from</span> <span class="nn">minio</span> <span class="kn">import</span> <span class="n">Minio</span>
+<span class="kn">from</span> <span class="nn">minio.error</span> <span class="kn">import</span> <span class="p">(</span><span class="n">ResponseError</span><span class="p">,</span> <span class="n">BucketAlreadyOwnedByYou</span><span class="p">,</span>
+                         <span class="n">BucketAlreadyExists</span><span class="p">)</span>
+
+<span class="c1"># Get username from your token</span>
+<span class="n">username</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="bp">False</span><span class="p">)[</span>
+    <span class="s1">&#39;preferred_username&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;@&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># Prepare the local directory, where you will mount your bucket</span>
+<span class="n">directory</span> <span class="o">=</span> <span class="s2">&quot;/tmp/&quot;</span> <span class="o">+</span> <span class="n">username</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">directory</span><span class="p">):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span>
+
+<span class="c1"># Initialize Minio client</span>
+<span class="n">minioClient</span> <span class="o">=</span> <span class="n">Minio</span><span class="p">(</span>
+    <span class="s1">&#39;131.154.97.121:9001&#39;</span><span class="p">,</span>
+    <span class="n">access_key</span><span class="o">=</span><span class="n">credenstials</span><span class="p">[</span><span class="s1">&#39;AccessKeyId&#39;</span><span class="p">],</span>
+    <span class="n">secret_key</span><span class="o">=</span><span class="n">credenstials</span><span class="p">[</span><span class="s1">&#39;SecretAccessKey&#39;</span><span class="p">],</span>
+    <span class="n">session_token</span><span class="o">=</span><span class="n">credenstials</span><span class="p">[</span><span class="s1">&#39;SessionToken&#39;</span><span class="p">],</span>
+    <span class="n">secure</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+    <span class="n">http_client</span><span class="o">=</span><span class="n">urllib3</span><span class="o">.</span><span class="n">PoolManager</span><span class="p">(</span>
+        <span class="n">timeout</span><span class="o">=</span><span class="n">urllib3</span><span class="o">.</span><span class="n">Timeout</span><span class="o">.</span><span class="n">DEFAULT_TIMEOUT</span><span class="p">,</span>
+        <span class="n">cert_reqs</span><span class="o">=</span><span class="s1">&#39;CERT_REQUIRED&#39;</span><span class="p">,</span>
+        <span class="n">ca_certs</span><span class="o">=</span><span class="s2">&quot;MINIO.pem&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+<span class="c1"># Make a bucket with the make_bucket API call. Skip if already exists</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">minioClient</span><span class="o">.</span><span class="n">make_bucket</span><span class="p">(</span><span class="n">username</span><span class="p">)</span>
+<span class="k">except</span> <span class="n">BucketAlreadyOwnedByYou</span><span class="p">:</span>
+    <span class="k">pass</span>
+<span class="k">except</span> <span class="n">BucketAlreadyExists</span><span class="p">:</span>
+    <span class="k">pass</span>
+<span class="k">except</span> <span class="n">ResponseError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="n">err</span>
+</pre></div>
+
+
+<p>Now it's all set, you can start to leverage MINIO client for doing whatever you like.</p>
+<p>Listing buckets:</p>
+<div class="codehilite"><pre><span></span><span class="n">buckets</span> <span class="o">=</span> <span class="n">minioClient</span><span class="o">.</span><span class="n">list_buckets</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">bucket</span> <span class="ow">in</span> <span class="n">buckets</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">bucket</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">bucket</span><span class="o">.</span><span class="n">creation_date</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Loading a file on a subdirectory of your bucket:</p>
+<div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">uuid</span>
+<span class="c1">#uniq file name just for lazy testing</span>
+<span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">.txt&quot;</span> <span class="o">%</span> <span class="n">uuid</span><span class="o">.</span><span class="n">uuid1</span><span class="p">()</span>
+
+<span class="c1">#put a object in a sub-directory of the bucket</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;requirements.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_data</span><span class="p">:</span>
+        <span class="n">file_stat</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">stat</span><span class="p">(</span><span class="s1">&#39;requirements.txt&#39;</span><span class="p">)</span>
+        <span class="n">minioClient</span><span class="o">.</span><span class="n">put_object</span><span class="p">(</span> <span class="n">username</span><span class="p">,</span> <span class="s1">&#39;my_object/test_objec_</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">filename</span><span class="p">,</span> <span class="n">file_data</span><span class="p">,</span> <span class="n">file_stat</span><span class="o">.</span><span class="n">st_size</span><span class="p">)</span>
+<span class="k">except</span> <span class="n">ResponseError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Streaming data into MINIO:</p>
+<div class="codehilite"><pre><span></span><span class="c1"># streaming data to a directory within the bucket</span>
+<span class="n">data</span> <span class="o">=</span> <span class="s2">&quot;I want to stream some test to minio&quot;</span>
+<span class="n">data_bytes</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+<span class="n">data_stream</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">data_bytes</span><span class="p">)</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">minioClient</span><span class="o">.</span><span class="n">put_object</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="s2">&quot;my_stream/test_stream_</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">filename</span><span class="p">,</span> <span class="n">data_stream</span> <span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data_bytes</span><span class="p">))</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="n">ex</span>
+</pre></div>
                 
                   
                 

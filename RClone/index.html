@@ -356,9 +356,38 @@
       
     
     
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Posix con RClone
+      </label>
+    
     <a href="./" title="Posix con RClone" class="md-nav__link md-nav__link--active">
       Posix con RClone
     </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#code-walk-through" class="md-nav__link">
+    Code walk-through
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
     
   </li>
 
@@ -402,6 +431,22 @@
     
   
   
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#code-walk-through" class="md-nav__link">
+    Code walk-through
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -430,6 +475,156 @@
 </ul>
 </li>
 </ul>
+<h2 id="code-walk-through">Code walk-through</h2>
+<p>First of all you have to get your IAM token from oidc-agent and put it into <code>TOKEN</code> env variable.</p>
+<div class="codehilite"><pre><span></span><span class="nb">export</span> <span class="nv">TOKEN</span><span class="o">=</span><span class="sb">`</span>oidc-token demo<span class="sb">`</span>
+</pre></div>
+
+
+<p>then in the python code you can recall it with:</p>
+<div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="n">token</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;TOKEN&quot;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Now you need to use this token to retrieve your Minio S3 temporary credentials. 
+One way to do this is as follows:</p>
+<div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">xmltodict</span>
+
+
+<span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;https://131.154.97.121:9001&quot;</span><span class="p">,</span>
+                  <span class="n">data</span><span class="o">=</span><span class="p">{</span>
+                      <span class="s1">&#39;Action&#39;</span><span class="p">:</span>
+                      <span class="s2">&quot;AssumeRoleWithWebIdentity&quot;</span><span class="p">,</span>
+                      <span class="s1">&#39;Version&#39;</span><span class="p">:</span> <span class="s2">&quot;2011-06-15&quot;</span><span class="p">,</span>
+                      <span class="s1">&#39;WebIdentityToken&#39;</span><span class="p">:</span> <span class="n">token</span><span class="p">,</span>
+                      <span class="s1">&#39;DurationSeconds&#39;</span><span class="p">:</span> <span class="mi">900</span>
+                  <span class="p">},</span>
+                  <span class="n">verify</span><span class="o">=</span><span class="s1">&#39;MINIO.pem&#39;</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">reason</span><span class="p">)</span>
+
+<span class="n">tree</span> <span class="o">=</span> <span class="n">xmltodict</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+
+<span class="n">credenstials</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">tree</span><span class="p">[</span><span class="s1">&#39;AssumeRoleWithWebIdentityResponse&#39;</span><span class="p">]</span>
+                    <span class="p">[</span><span class="s1">&#39;AssumeRoleWithWebIdentityResult&#39;</span><span class="p">][</span><span class="s1">&#39;Credentials&#39;</span><span class="p">])</span>
+</pre></div>
+
+
+<p>You have now a set of valid credentials composed by an accessID, a secret, and a session token:</p>
+<div class="codehilite"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s2">&quot;accessID:&quot;</span><span class="p">,</span> <span class="n">credenstials</span><span class="p">[</span><span class="s1">&#39;AccessKeyId&#39;</span><span class="p">])</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;secret:&quot;</span><span class="p">,</span> <span class="n">credenstials</span><span class="p">[</span><span class="s1">&#39;SecretAccessKey&#39;</span><span class="p">])</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;session token:&quot;</span><span class="p">,</span> <span class="n">credenstials</span><span class="p">[</span><span class="s1">&#39;SessionToken&#39;</span><span class="p">])</span>
+</pre></div>
+
+
+<p>Now before mounting your bucket with RClone, you might want to check if the bucket with your username exists, and in case not, to create one. You can do it easily with the MINIO python APIs:</p>
+<div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">jwt</span>
+<span class="kn">from</span> <span class="nn">minio</span> <span class="kn">import</span> <span class="n">Minio</span>
+<span class="kn">from</span> <span class="nn">minio.error</span> <span class="kn">import</span> <span class="p">(</span><span class="n">ResponseError</span><span class="p">,</span> <span class="n">BucketAlreadyOwnedByYou</span><span class="p">,</span>
+                         <span class="n">BucketAlreadyExists</span><span class="p">)</span>
+
+<span class="c1"># Get username from your token</span>
+<span class="n">username</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="bp">False</span><span class="p">)[</span>
+    <span class="s1">&#39;preferred_username&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;@&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># Prepare the local directory, where you will mount your bucket</span>
+<span class="n">directory</span> <span class="o">=</span> <span class="s2">&quot;/tmp/&quot;</span> <span class="o">+</span> <span class="n">username</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">directory</span><span class="p">):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span>
+
+<span class="c1"># Initialize Minio client</span>
+<span class="n">minioClient</span> <span class="o">=</span> <span class="n">Minio</span><span class="p">(</span>
+    <span class="s1">&#39;131.154.97.121:9001&#39;</span><span class="p">,</span>
+    <span class="n">access_key</span><span class="o">=</span><span class="n">credenstials</span><span class="p">[</span><span class="s1">&#39;AccessKeyId&#39;</span><span class="p">],</span>
+    <span class="n">secret_key</span><span class="o">=</span><span class="n">credenstials</span><span class="p">[</span><span class="s1">&#39;SecretAccessKey&#39;</span><span class="p">],</span>
+    <span class="n">session_token</span><span class="o">=</span><span class="n">credenstials</span><span class="p">[</span><span class="s1">&#39;SessionToken&#39;</span><span class="p">],</span>
+    <span class="n">secure</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+    <span class="n">http_client</span><span class="o">=</span><span class="n">urllib3</span><span class="o">.</span><span class="n">PoolManager</span><span class="p">(</span>
+        <span class="n">timeout</span><span class="o">=</span><span class="n">urllib3</span><span class="o">.</span><span class="n">Timeout</span><span class="o">.</span><span class="n">DEFAULT_TIMEOUT</span><span class="p">,</span>
+        <span class="n">cert_reqs</span><span class="o">=</span><span class="s1">&#39;CERT_REQUIRED&#39;</span><span class="p">,</span>
+        <span class="n">ca_certs</span><span class="o">=</span><span class="s2">&quot;MINIO.pem&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+<span class="c1"># Make a bucket with the make_bucket API call. Skip if already exists</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">minioClient</span><span class="o">.</span><span class="n">make_bucket</span><span class="p">(</span><span class="n">username</span><span class="p">)</span>
+<span class="k">except</span> <span class="n">BucketAlreadyOwnedByYou</span><span class="p">:</span>
+    <span class="k">pass</span>
+<span class="k">except</span> <span class="n">BucketAlreadyExists</span><span class="p">:</span>
+    <span class="k">pass</span>
+<span class="k">except</span> <span class="n">ResponseError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="n">err</span>
+</pre></div>
+
+
+<p>Now we are ready to configure RClone with our endpoint and credentials as follow:</p>
+<div class="codehilite"><pre><span></span><span class="c1"># Write rclone config file in $PWD/&lt;username&gt;.conf</span>
+<span class="n">config</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">[</span><span class="si">%s</span><span class="s2">]</span>
+<span class="s2">type = s3</span>
+<span class="s2">provider = Minio</span>
+<span class="s2">env_auth = true</span>
+<span class="s2">access_key_id =</span>
+<span class="s2">secret_access_key =</span>
+<span class="s2">session_token =</span>
+<span class="s2">endpoint = https://</span><span class="si">%s</span><span class="s2">:9001</span>
+<span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span>
+    <span class="n">username</span><span class="p">,</span>
+
+    <span class="s1">&#39;131.154.97.121&#39;</span>
+<span class="p">)</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">.conf&quot;</span> <span class="o">%</span> <span class="n">username</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">conf_file</span><span class="p">:</span>
+    <span class="n">conf_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+
+<span class="c1"># Set env vars with credentials</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;AWS_ACCESS_KEY&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">credenstials</span><span class="p">[</span><span class="s1">&#39;AccessKeyId&#39;</span><span class="p">]</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;AWS_SECRET_KEY&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">credenstials</span><span class="p">[</span><span class="s1">&#39;SecretAccessKey&#39;</span><span class="p">]</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;AWS_SESSION_TOKEN&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">credenstials</span><span class="p">[</span><span class="s1">&#39;SessionToken&#39;</span><span class="p">]</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;export AWS_ACCESS_KEY=</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">credenstials</span><span class="p">[</span><span class="s1">&#39;AccessKeyId&#39;</span><span class="p">])</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;export AWS_SECRET_KEY=</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">credenstials</span><span class="p">[</span><span class="s1">&#39;SecretAccessKey&#39;</span><span class="p">])</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;export AWS_SESSION_TOKEN=</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">credenstials</span><span class="p">[</span><span class="s1">&#39;SessionToken&#39;</span><span class="p">])</span>
+</pre></div>
+
+
+<p>Before mounting our volume, let's check if there is anything mounted and in case umounting it:</p>
+<div class="codehilite"><pre><span></span><span class="c1"># Unmount volume if already present</span>
+<span class="n">myCmd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">popen</span><span class="p">(</span><span class="s1">&#39;fusermount -u /tmp/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">username</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="n">myCmd</span><span class="p">)</span>
+</pre></div>
+
+
+<p>It's all set now. Let's mount our volume and access data on it just like a normal posix:</p>
+<div class="codehilite"><pre><span></span><span class="c1"># Mount all user buckets</span>
+<span class="n">myCmd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">popen</span><span class="p">(</span><span class="s1">&#39;rclone --ca-cert MINIO.pem --config </span><span class="si">%s</span><span class="s1">.conf mount --daemon --vfs-cache-mode full --no-modtime </span><span class="si">%s</span><span class="s1">: /tmp/</span><span class="si">%s</span><span class="s1"> &amp;&amp; sleep 2&#39;</span> <span class="o">%</span>
+                 <span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">username</span><span class="p">))</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="n">myCmd</span><span class="p">)</span>
+
+<span class="c1"># List contents of user buckets</span>
+<span class="n">myCmd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">popen</span><span class="p">(</span><span class="s1">&#39;ls -ltrh /tmp/</span><span class="si">%s</span><span class="s1">/*/&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">username</span><span class="p">))</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="n">myCmd</span><span class="p">)</span>
+
+<span class="c1"># Write a posix file</span>
+<span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">.txt&quot;</span> <span class="o">%</span> <span class="n">uuid</span><span class="o">.</span><span class="n">uuid1</span><span class="p">()</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span> <span class="s2">&quot;/tmp/</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">username</span><span class="p">,</span><span class="n">username</span><span class="p">,</span><span class="n">filename</span><span class="p">)</span> <span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">text_file</span><span class="p">:</span>
+    <span class="n">text_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;the file name is </span><span class="si">%s</span><span class="s2"> </span><span class="se">\n\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">filename</span><span class="p">)</span>
+    <span class="n">text_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;and the file has been created by </span><span class="si">%s</span><span class="s2"> </span><span class="se">\n\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">username</span><span class="p">)</span>
+</pre></div>
+
+
+<p>That's it. Now you can exit and start doing thing with your mounted volume. </p>
+<blockquote>
+<p>N.B. Be careful though, your credentials are limited to 1h, after that you need to unmount and remount with new credentials.
+There is a PR that is in preparation to make RClone talk with oidc-agent for an automatic refresh of the credentials.</p>
+</blockquote>
+<h1 id="unmount-the-volume">Unmount the volume</h1>
+<div class="codehilite"><pre><span></span>fusermount -u &lt;path to your volume&gt;
+</pre></div>
                 
                   
                 

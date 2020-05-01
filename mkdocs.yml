@@ -8,12 +8,15 @@ theme:
     accent: "Light Blue"
 nav:
   - Home: "README.md"
-  - Server side encryption: "Encryption.md"
-  - WebUI: "WebUI.md"
-  - Setup OIDC-agent: "Oidc.md"
-  - Python examples:
-    - Posix con RClone: "RClone.md"
-    - S3 APIs: "s3.md" 
+  - Admin guide:
+    - OPA and IAM: "Opa.md"
+    - Server side encryption: "Encryption.md"
+  - User guide:
+    - Setup OIDC-agent: "Oidc.md"
+    - WebUI: "WebUI.md"
+    - Python examples:
+      - Posix con RClone: "RClone.md"
+      - S3 APIs: "s3.md" 
 repo_name: "dciangot/minio-opa"
 repo_url: "https://github.com/dciangot/minio-opa"
 

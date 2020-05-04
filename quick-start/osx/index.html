@@ -31,18 +31,18 @@
       
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
-      <link rel="shortcut icon" href="assets/images/favicon.png">
+      <link rel="shortcut icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.6.0">
     
     
       
-        <title>MINIO with OPA and IAM</title>
+        <title>MacOS - MINIO with OPA and IAM</title>
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/application.1b62728e.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/application.1b62728e.css">
       
-        <link rel="stylesheet" href="assets/stylesheets/application-palette.a8b3c06d.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/application-palette.a8b3c06d.css">
       
       
         
@@ -51,7 +51,7 @@
       
     
     
-      <script src="assets/javascripts/modernizr.268332fc.js"></script>
+      <script src="../../assets/javascripts/modernizr.268332fc.js"></script>
     
     
       
@@ -60,7 +60,7 @@
         <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
       
     
-    <link rel="stylesheet" href="assets/fonts/material-icons.css">
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
     
     
     
@@ -85,7 +85,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="#guida-per-setup-iam-minio-opa" tabindex="1" class="md-skip">
+      <a href="#automatic-posix-mount-point-for-minio-demo-bucket" tabindex="1" class="md-skip">
         Skip to content
       </a>
     
@@ -94,7 +94,7 @@
   <nav class="md-header-nav md-grid">
     <div class="md-flex">
       <div class="md-flex__cell md-flex__cell--shrink">
-        <a href="." title="MINIO with OPA and IAM" class="md-header-nav__button md-logo">
+        <a href="../.." title="MINIO with OPA and IAM" class="md-header-nav__button md-logo">
           
             <i class="md-icon">cloud_circle</i>
           
@@ -111,7 +111,7 @@
             </span>
             <span class="md-header-nav__topic">
               
-                Home
+                MacOS
               
             </span>
           
@@ -186,7 +186,7 @@
                   <div class="md-sidebar__inner">
                     <nav class="md-nav md-nav--primary" data-md-level="0">
   <label class="md-nav__title md-nav__title--site" for="__drawer">
-    <a href="." title="MINIO with OPA and IAM" class="md-nav__button md-logo">
+    <a href="../.." title="MINIO with OPA and IAM" class="md-nav__button md-logo">
       
         <i class="md-icon">cloud_circle</i>
       
@@ -220,63 +220,11 @@
       
       
 
-  
 
-
-  <li class="md-nav__item md-nav__item--active">
-    
-    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-    
-      
-    
-    
-      <label class="md-nav__link md-nav__link--active" for="__toc">
-        Home
-      </label>
-    
-    <a href="." title="Home" class="md-nav__link md-nav__link--active">
+  <li class="md-nav__item">
+    <a href="../.." title="Home" class="md-nav__link">
       Home
     </a>
-    
-      
-<nav class="md-nav md-nav--secondary">
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">Table of contents</label>
-    <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#riferimenti" class="md-nav__link">
-    Riferimenti
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#guida-per-user" class="md-nav__link">
-    GUIDA PER USER
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#guida-per-admin" class="md-nav__link">
-    GUIDA PER ADMIN
-  </a>
-  
-</li>
-      
-      
-      
-      
-      
-    </ul>
-  
-</nav>
-    
   </li>
 
     
@@ -305,7 +253,7 @@
 
 
   <li class="md-nav__item">
-    <a href="Opa/" title="OPA and IAM" class="md-nav__link">
+    <a href="../../Opa/" title="OPA and IAM" class="md-nav__link">
       OPA and IAM
     </a>
   </li>
@@ -317,7 +265,7 @@
 
 
   <li class="md-nav__item">
-    <a href="Encryption/" title="Server side encryption" class="md-nav__link">
+    <a href="../../Encryption/" title="Server side encryption" class="md-nav__link">
       Server side encryption
     </a>
   </li>
@@ -332,10 +280,12 @@
       
       
 
+  
 
-  <li class="md-nav__item md-nav__item--nested">
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
     
     <label class="md-nav__link" for="nav-3">
       User guide
@@ -353,7 +303,7 @@
 
 
   <li class="md-nav__item">
-    <a href="WebUI/" title="WebUI" class="md-nav__link">
+    <a href="../../WebUI/" title="WebUI" class="md-nav__link">
       WebUI
     </a>
   </li>
@@ -363,10 +313,12 @@
           
           
 
+  
 
-  <li class="md-nav__item md-nav__item--nested">
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-2" type="checkbox" id="nav-3-2">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-2" type="checkbox" id="nav-3-2" checked>
     
     <label class="md-nav__link" for="nav-3-2">
       PoC quick start with Posix
@@ -384,7 +336,7 @@
 
 
   <li class="md-nav__item">
-    <a href="quick-start/windows/" title="Windows" class="md-nav__link">
+    <a href="../windows/" title="Windows" class="md-nav__link">
       Windows
     </a>
   </li>
@@ -394,11 +346,56 @@
           
           
 
+  
 
-  <li class="md-nav__item">
-    <a href="quick-start/osx/" title="MacOS" class="md-nav__link">
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        MacOS
+      </label>
+    
+    <a href="./" title="MacOS" class="md-nav__link md-nav__link--active">
       MacOS
     </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#requirements" class="md-nav__link">
+    Requirements
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-sts-wire-cli" class="md-nav__link">
+    Using STS-Wire CLI
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
   </li>
 
         
@@ -408,7 +405,7 @@
 
 
   <li class="md-nav__item">
-    <a href="quick-start/linux/" title="Linux" class="md-nav__link">
+    <a href="../linux/" title="Linux" class="md-nav__link">
       Linux
     </a>
   </li>
@@ -444,7 +441,7 @@
 
 
   <li class="md-nav__item">
-    <a href="Oidc/" title="Setup OIDC-agent" class="md-nav__link">
+    <a href="../../Oidc/" title="Setup OIDC-agent" class="md-nav__link">
       Setup OIDC-agent
     </a>
   </li>
@@ -456,7 +453,7 @@
 
 
   <li class="md-nav__item">
-    <a href="RClone/" title="Posix con RClone" class="md-nav__link">
+    <a href="../../RClone/" title="Posix con RClone" class="md-nav__link">
       Posix con RClone
     </a>
   </li>
@@ -468,7 +465,7 @@
 
 
   <li class="md-nav__item">
-    <a href="s3/" title="S3 APIs" class="md-nav__link">
+    <a href="../../s3/" title="S3 APIs" class="md-nav__link">
       S3 APIs
     </a>
   </li>
@@ -505,22 +502,15 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#riferimenti" class="md-nav__link">
-    Riferimenti
+  <a href="#requirements" class="md-nav__link">
+    Requirements
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#guida-per-user" class="md-nav__link">
-    GUIDA PER USER
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#guida-per-admin" class="md-nav__link">
-    GUIDA PER ADMIN
+  <a href="#using-sts-wire-cli" class="md-nav__link">
+    Using STS-Wire CLI
   </a>
   
 </li>
@@ -541,28 +531,29 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/dciangot/minio-opa/edit/master/docs/README.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="https://github.com/dciangot/minio-opa/edit/master/docs/quick-start/osx.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                <h1 id="guida-per-setup-iam-minio-opa">Guida per setup IAM-MINIO-OPA</h1>
-<h2 id="riferimenti">Riferimenti</h2>
+                <h1 id="automatic-posix-mount-point-for-minio-demo-bucket">Automatic posix mount point for Minio demo bucket</h1>
+<h2 id="requirements">Requirements</h2>
 <ul>
-<li><a href="https://www.openpolicyagent.org/docs/latest/">https://www.openpolicyagent.org/docs/latest/</a></li>
-<li><a href="https://docs.min.io/docs/minio-sts-quickstart-guide">https://docs.min.io/docs/minio-sts-quickstart-guide</a></li>
-<li><a href="https://github.com/minio/minio/blob/master/docs/sts/opa.md">https://github.com/minio/minio/blob/master/docs/sts/opa.md</a></li>
+<li>a user bucket created following <a href="../../WebUI/">WebUI guide</a></li>
 </ul>
-<h2 id="guida-per-user">GUIDA PER USER</h2>
-<ul>
-<li><a href="https://dciangot.github.io/minio-opa/Oidc">Gestire token con OIDC-agent</a></li>
-<li><a href="https://dciangot.github.io/minio-opa/WebUI">WebUI</a></li>
-<li><a href="https://dciangot.github.io/minio-opa/RClone">Volume Posix</a></li>
-<li><a href="https://dciangot.github.io/minio-opa/s3">S3 API</a></li>
-</ul>
-<h2 id="guida-per-admin">GUIDA PER ADMIN</h2>
-<ul>
-<li><a href="https://dciangot.github.io/minio-opa/Opa">OPA+IAM</a></li>
-<li><a href="https://dciangot.github.io/minio-opa/Encryption">Server side encryption</a></li>
-</ul>
+<h2 id="using-sts-wire-cli">Using STS-Wire CLI</h2>
+<p>Download the STS-Wire utility to get you credentials and mount your bucket in one go:</p>
+<p><code>wget https://github.com/dciangot/sts-wire/releases/download/v0.0.1/sts-wire_osx</code></p>
+<p>To use it, you need to provide an instance name (of your choice, it is just for storing IAM client configuration, e.g. <code>myminio</code>), the path to your bucket or to root <code>/</code>, and finally the mount point destination (in this example <code>./mountedVolume</code>):</p>
+<div class="codehilite"><pre><span></span>./sts-wire_osx  myminio / ./mountedVolume
+</pre></div>
+
+
+<p>Follow all the instructions, providing a password for credentials encryption when requested.
+Eventually, if everything went fine, on your browser you will be prompted with a message like:</p>
+<div class="codehilite"><pre><span></span>VOLUME MOUNTED, YOU CAN NOW CLOSE THIS TAB. 
+</pre></div>
+
+
+<p>The volume will stay mounted untill you exit the running sts-wire process with Control-C.</p>
                 
                   
                 
@@ -584,14 +575,28 @@
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
+          <a href="../windows/" title="Windows" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Windows
+              </span>
+            </div>
+          </a>
         
-          <a href="Opa/" title="OPA and IAM" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+        
+          <a href="../linux/" title="Linux" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                OPA and IAM
+                Linux
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">
@@ -614,7 +619,7 @@
       </div>
       
   <div class="md-footer-social">
-    <link rel="stylesheet" href="assets/fonts/font-awesome.css">
+    <link rel="stylesheet" href="../../assets/fonts/font-awesome.css">
     
       <a href="https://github.com/dciangot/minio-opa" class="md-footer-social__link fa fa-github"></a>
     
@@ -628,9 +633,9 @@
       
     </div>
     
-      <script src="assets/javascripts/application.808e90bb.js"></script>
+      <script src="../../assets/javascripts/application.808e90bb.js"></script>
       
-      <script>app.initialize({version:"1.0.4",url:{base:"."}})</script>
+      <script>app.initialize({version:"1.0.4",url:{base:"../.."}})</script>
       
     
   </body>

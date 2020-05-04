@@ -543,7 +543,8 @@
 <p>Download the STS-Wire utility to get you credentials and mount your bucket in one go:</p>
 <p><code>wget https://github.com/dciangot/sts-wire/releases/download/v0.0.1/sts-wire_osx</code></p>
 <p>To use it, you need to provide an instance name (of your choice, it is just for storing IAM client configuration, e.g. <code>myminio</code>), the path to your bucket or to root <code>/</code>, and finally the mount point destination (in this example <code>./mountedVolume</code>):</p>
-<div class="codehilite"><pre><span></span>./sts-wire_osx  myminio / ./mountedVolume
+<div class="codehilite"><pre><span></span>chmod +x ./sts-wire_osx
+./sts-wire_osx  myminio / ./mountedVolume
 </pre></div>
 
 

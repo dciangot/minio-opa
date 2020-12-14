@@ -9,6 +9,7 @@ services:
       - "--log-level=debug"
       - "--log-format=text"
       - "--addr=0.0.0.0:8181"
+      - "-w"
       - "/policies"
     volumes:
       - ./policies:/policies
@@ -20,7 +21,7 @@ services:
       - "/data"
     environment:
       MINIO_POLICY_OPA_URL: http://localhost:8181/v1/data/httpapi/authz/allow
-      MINIO_IDENTITY_OPENID_CLIENT_ID: 7ecf180f-0d40-4794-9198-f10cc4ee53b3 
-      MINIO_IDENTITY_OPENID_CONFIG_URL: https://iam-demo.cloud.cnaf.infn.it/.well-known/openid-configuration
+      MINIO_IDENTITY_OPENID_CLIENT_ID: <...>
+      MINIO_IDENTITY_OPENID_CONFIG_URL: https://dodas-iam.cloud.cnaf.infn.it/.well-known/openid-configuration
     volumes:
       - ./data:/data

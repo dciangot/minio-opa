@@ -33,74 +33,11 @@ rl_permissions := {
              {"action": "s3:PutObject"}],
 }
 
-allow {
-  input.account == "minioadmin"
-}
+allowed_issuer := "https://dodas-iam.cloud.cnaf.infn.it/"
 
-
-# Allow users to manage their own data.
 allow {
-  username := split(lower(input.claims.preferred_username),"@")[0]
-  input.bucket == username
-  input.claims.iss == "https://iam-demo.cloud.cnaf.infn.it/"
-  permissions := rl_permissions["user"]
+  input.claims.iss == allowed_issuer
+  permissions := rl_permissions["admin"]
   p := permissions[_]
-  p == {"action": input.action}
-}
-
-allow {
-  username := input.claims.preferred_username
-  input.bucket == username
-  input.claims.iss == "https://iam-demo.cloud.cnaf.infn.it/"
-  permissions := rl_permissions["user"]
-  p := permissions[_]
-  p == {"action": input.action}
-}
-
-allow {
-  username := input.claims.preferred_username
-  input.bucket == username
-  input.claims.iss == "https://iam-demo.cloud.cnaf.infn.it/"
-  permissions := rl_permissions["user"]
-  p := permissions[_]
-  p == {"action": input.action}
-}
-
-allow {
-  username := split(lower(input.claims.preferred_username),"@")[0]
-
-  ref := input.conditions.Referer[_]
-
-  url := concat("/", ["^http://.*:9000/minio/scratch",username,".*$"] )
-
-  re_match( url , ref)
-
-  input.claims.iss == "https://iam-demo.cloud.cnaf.infn.it/"
-  permissions := rl_permissions["user"]
-  p := permissions[_]
-  p == {"action": input.action}
-}
-
-allow {
-  username := input.claims.preferred_username
-
-  ref := input.conditions.Referer[_]
-
-  url := concat("/", ["^http://.*:9000/minio/scratch",username,".*$"] )
-
-  re_match( url , ref)
-
-  input.claims.iss == "https://iam-demo.cloud.cnaf.infn.it/"
-  permissions := rl_permissions["user"]
-  p := permissions[_]
-  p == {"action": input.action}
-}
-
-# Allow to retrieve and see data from other users in scratch area
-allow {
-  input.bucket == "scratch"
-  permissions := rl_permissions["scratch"]
-  p := permissions[_]
-  # check if the permission granted to r matches the user's request
   p == {"action": input.action}
 }
